@@ -12,13 +12,9 @@ Uncomment `ui`, change  to:
     	path: "ui",
     	middleware: require("./dashboard-auth.js")
     },
-Download https://linhtranvu.github.io/node-red/dashboard-auth.js , put in your `.node-red` folder (so `settings.js` and `dashboard-auth.js` in the same folder). Open file, change username and password to what you want.
+Download [dashboard-auth.js](https://linhtranvu.github.io/node-red/dashboard-auth.js) , put in your `.node-red` folder (so `settings.js` and `dashboard-auth.js` in the same folder). Open file, change username and password to what you want
 
-Credit to 
-
-[librae8226]: https://github.com/node-red/node-red-dashboard/pull/209
-
-
+Credit to [librae8226](https://github.com/node-red/node-red-dashboard/pull/209 ) 
 
 ## Install the dependencies
 
