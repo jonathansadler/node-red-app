@@ -7,7 +7,9 @@
         This is a mobile app for Node-RED. Hope you guys like it.
         <ul>
           <li>
-            Project Github:
+            Project Github:<a href="https://github.com/linhtranvu/node-red-app"
+              >https://github.com/linhtranvu/node-red-app</a
+            >
           </li>
           <li>
             Author: Linh Tran Vu. Email: linhtranvu@gmail.com

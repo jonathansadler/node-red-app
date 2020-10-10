@@ -5,7 +5,7 @@
     >
       <div>
         <q-btn
-          @click="showDashBoard"
+          @click="loadDashBoard"
           size="xl"
           round
           color="orange"
@@ -15,13 +15,13 @@
       </div>
       <div>
         <q-btn
-          @click="showAdmin"
+          @click="loadAdmin"
           size="xl"
           round
           color="blue"
           icon="admin_panel_settings"
         /><br />
-        Dashboard
+        Admin
       </div>
       <div class="items-center content-center">
         <q-btn
@@ -72,50 +72,75 @@ export default {
     } else {
       this.loadDashBoard();
     }
-
-    // if (typeof dashboard_url !== "undefined") {
-    //   console.log(this.mydash);
-    //   if (typeof this.mydash !== "undefined") {
-    //   } else {
-    //     this.loadDashBoard();
-    //   }
-    // } else {
-    //   this.$router.push("/config");
-    // }
   }, //end mount
   methods: {
-    showAdmin: function() {},
+    loadAdmin: function() {
+      var nrAdmin = cordova.InAppBrowser.open(
+        this.$q.localStorage.getItem("admin_url"),
+        "_blank",
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
+      );
+      var localStorage = this.$q.localStorage;
+      // console.log(localStorage);
+      nrAdmin.addEventListener("loadstop", function() {
+        nrAdmin.executeScript({
+          code:
+            'jQuery("html").prepend("<h3>PLEASE WAIT 3S FOR AUTOMATICALLY LOGIN TO PROCEED</h3>")'
+        });
+
+        nrAdmin.executeScript(
+          {
+            file: localStorage.getItem("js_url")
+          },
+          function() {
+            var admin_user = localStorage.getItem("admin_user");
+            var admin_password = localStorage.getItem("admin_password");
+            nrAdmin.executeScript({
+              code: "loginAdmin('" + admin_user + "','" + admin_password + "')"
+              // code: "loginAdmin('admin','gaumiangu')"
+            });
+          }
+        );
+      });
+      nrAdmin.addEventListener("message", function(data) {
+        if (data.data.home == "home") {
+          nrAdmin.close();
+        }
+      });
+    },
+
     loadDashBoard: function() {
       var nrdashUrl =
         this.$q.localStorage.getItem("dashboard_url") +
-        "/?user=" +
+        "/?username=" +
         this.$q.localStorage.getItem("dashboard_user") +
         "&token=" +
         this.$q.localStorage.getItem("dashboard_password");
+      console.log(nrdashUrl);
       var nrdash = cordova.InAppBrowser.open(
         nrdashUrl,
         "_blank",
         "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
       );
       this.mydash = nrdash;
+      var localStorage = this.$q.localStorage;
       nrdash.addEventListener("loadstop", function() {
         nrdash.executeScript({
-          file: this.$q.localStorage.getItem("js_url")
+          file: localStorage.getItem("js_url")
         });
       });
-      var localStorage = this.$q.localStorage;
 
       nrdash.addEventListener("message", function(data) {
         if (data.data.home == "home") {
-          nrdash.hide();
-          localStorage.set("nrdash", nrdash);
+          nrdash.close();
+          this.$q.localStorage.set("nrdash", nrdash);
         }
       });
     },
 
     showDashBoard: function() {
-      nrdash = this.$q.sessionStorage.getItem("nrdash");
-      console.log(nrdash);
+      var nrdash = this.$q.localStorage.getItem("nrdash");
+      // console.log(nrdash);
       if (nrdash !== "undefined") {
         // if (typeof this.mydash !== 'undefined') {
         this.mydash.show();

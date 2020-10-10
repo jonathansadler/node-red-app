@@ -7,6 +7,20 @@
         <div class="row">
           <h5 class="text-weight-bold text-blue">Node-RED App Setting</h5>
         </div>
+        <q-separator />
+        <q-card class="my-card bg-amber-3">
+          <q-card-section>
+            By default, NR Dashboard use basic authentication, that impossible
+            to embed in mobile app. For testing, you must remove basic
+            authentication by comment out "httpNodeAuth" in NR settings.js
+            <br /><b
+              >For production, please add authentication by using middle ware in
+              ui settings</b
+            ><br />
+            ui: { path: "ui", middleware: require("./dashboard-auth.js") },<br />
+            Visit project github for guideline to install middleware
+          </q-card-section>
+        </q-card>
         <div class=" row">
           <q-input
             ref="dashboard_url"
@@ -23,19 +37,6 @@
           >
           </q-input>
         </div>
-        <q-card class="my-card bg-amber-3">
-          <q-card-section>
-            By default, NR Dashboard use basic authentication, that impossible
-            to embed in mobile app. For testing, you must remove basic
-            authentication by comment out "httpNodeAuth" in NR settings.js
-            <br /><b
-              >For production, please add authentication by using middle ware in
-              ui settings</b
-            ><br />
-            ui: { path: "ui", middleware: require("./dashboard-auth.js") },<br />
-            Visit project github for guideline to install middleware
-          </q-card-section>
-        </q-card>
         <div class=" row">
           <q-input
             ref="dashboard_user"
@@ -58,10 +59,57 @@
           >
           </q-input>
         </div>
+        <q-separator />
+        <q-card class="my-card bg-light-blue-2 ">
+          <q-card-section>
+            Setting for Admin URL, username and password. App will use this info
+            to automatically login. No data sent out, everything saved on your
+            phone.
+          </q-card-section>
+        </q-card>
+        <div class=" row">
+          <q-input
+            ref="admin_url"
+            :rules="[
+              val =>
+                !!val ||
+                'Required, must be a valid url with http or https. Eg: http://mydomain.com:1880 '
+            ]"
+            v-model="admin_url"
+            dense
+            outlined
+            type="text"
+            label="Admin URL"
+          >
+          </q-input>
+        </div>
+        <div class=" row">
+          <q-input
+            ref="admin_user"
+            v-model="admin_user"
+            dense
+            outlined
+            type="text"
+            label="Admin username"
+          >
+          </q-input>
+        </div>
+        <div class=" row">
+          <q-input
+            ref="admin_password"
+            v-model="admin_password"
+            dense
+            outlined
+            type="text"
+            label="Admin passowrd"
+          >
+          </q-input>
+        </div>
+        <q-separator />
         <q-card class="my-card bg-light-green-3">
           <q-card-section>
-            Path for JS file to inject "Home button" to Dashboard. By default,
-            app use JS file from github website
+            Path for JS file to inject "Home button", Automatic Login. By
+            default, app use JS file from github website
             (https://linhtranvu.github.io/node-red/myscript.js). If your
             Node-RED does not connect to internet or you want to host, download
             JS file and put in a location where your Node-RED could reach. It
@@ -113,6 +161,18 @@ export default {
       this.$q.localStorage.getItem("dashboard_password") === null
         ? ""
         : this.$q.localStorage.getItem("dashboard_password");
+    this.admin_url =
+      this.$q.localStorage.getItem("admin_url") === null
+        ? ""
+        : this.$q.localStorage.getItem("admin_url");
+    this.admin_user =
+      this.$q.localStorage.getItem("admin_user") === null
+        ? ""
+        : this.$q.localStorage.getItem("admin_user");
+    this.admin_password =
+      this.$q.localStorage.getItem("admin_password") === null
+        ? ""
+        : this.$q.localStorage.getItem("admin_password");
   },
   methods: {
     save() {
@@ -135,6 +195,9 @@ export default {
             "dashboard_password",
             this.dashboard_password
           );
+          this.$q.localStorage.set("admin_url", this.admin_url);
+          this.$q.localStorage.set("admin_user", this.admin_user);
+          this.$q.localStorage.set("admin_password", this.admin_password);
           this.$q.localStorage.set("js_url", this.js_url);
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({

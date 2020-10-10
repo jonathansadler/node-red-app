@@ -2,7 +2,26 @@
 
 A mobile app for node-RED
 
+## Change user authentication to middleware for Dashboard
+
+In `.node-red/settings.js`, comment out `httpNodeAuth` to remove basic authentication
+
+Uncomment `ui`, change  to:
+
+    ui: { 
+    	path: "ui",
+    	middleware: require("./dashboard-auth.js")
+    },
+Download https://linhtranvu.github.io/node-red/dashboard-auth.js , put in your `.node-red` folder (so `settings.js` and `dashboard-auth.js` in the same folder). Open file, change username and password to what you want.
+
+Credit to 
+
+[librae8226]: https://github.com/node-red/node-red-dashboard/pull/209
+
+
+
 ## Install the dependencies
+
 ```bash
 npm install
 ```

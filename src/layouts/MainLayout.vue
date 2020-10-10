@@ -1,13 +1,12 @@
 <template>
   <q-layout view="hHh lpR fFf">
-
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
           </q-avatar>
-          <q-btn flat to="/">My Node Red Home 11</q-btn>
+          <q-btn flat to="/">Node-RED App</q-btn>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -16,7 +15,7 @@
       <router-view />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <!-- <q-footer elevated class="bg-grey-8 text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
@@ -25,15 +24,12 @@
           Title
         </q-toolbar-title>
       </q-toolbar>
-    </q-footer>
-
+    </q-footer> -->
   </q-layout>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 /*
 export default {
   mounted () {
@@ -77,4 +73,3 @@ export default {
 }
 */
 </script>
-
