@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+            <img src="~assets/node-red-hexagon.png" />
           </q-avatar>
           <q-btn flat to="/">Node-RED App</q-btn>
         </q-toolbar-title>
