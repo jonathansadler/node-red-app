@@ -99,25 +99,17 @@ export default {
         var admin_user = MylocalStorage.getItem('admin_user') // LOOIX O DAY DEO BIET TAI SAO
         var admin_password = MylocalStorage.getItem('admin_password')
         var admin_url = MylocalStorage.getItem('admin_url')
-        var params_dashboard = {
-          url: MylocalStorage.getItem('dashboard_url'),
-          username: MylocalStorage.getItem('dashboard_user'),
-          password: MylocalStorage.getItem('dashboard_password')
-        }
+        var dashboard_url = MylocalStorage.getItem('dashboard_url')
+        var dashboard_username = MylocalStorage.getItem('dashboard_user')
+        var dashboard_password = MylocalStorage.getItem('dashboard_password')
 
         nrAdmin.executeScript(
           {
             file: MylocalStorage.getItem('js_url')
           },
           function () {
-            console.log(admin_url)
-
-            // var params_dashboard = {
-
-            // };
-            // console.log(params_dashboard);
             nrAdmin.executeScript({
-              code: `loginAdmin('${admin_user}','${admin_password}','${admin_url}','${params_dashboard}')`
+              code: `loginAdmin('${admin_user}','${admin_password}','${admin_url}','${dashboard_url}','${dashboard_username}','${dashboard_password}')`
             })
           }
         )
