@@ -8,7 +8,8 @@ const routes = [
       { path: '/dashboard', component: () => import('pages/dashboard.vue') },
       { path: '/config', component: () => import('pages/Config.vue') },
       { path: '/camera', component: () => import('pages/Camera.vue') },
-      { path: '/help', component: () => import('pages/Help.vue') }
+      { path: '/help', component: () => import('pages/Help.vue') },
+      { path: '/device', component: () => import('pages/Device.vue') }
     ]
   },
 

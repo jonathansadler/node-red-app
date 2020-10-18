@@ -101,7 +101,7 @@
             dense
             outlined
             type="text"
-            label="Admin passowrd"
+            label="Admin password"
           >
           </q-input>
         </div>
@@ -143,44 +143,45 @@
 
 <script>
 export default {
-  mounted() {
-    if (this.$q.localStorage.getItem("js_url") === null) {
-      this.js_url = "https://linhtranvu.github.io/node-red/myscript.js";
+  mounted () {
+    if (this.$q.localStorage.getItem('js_url') === null) {
+      this.js_url =
+        process.env.js_url
     } else {
-      this.js_url = this.$q.localStorage.getItem("js_url");
+      this.js_url = this.$q.localStorage.getItem('js_url')
     }
     this.dashboard_url =
-      this.$q.localStorage.getItem("dashboard_url") === null
-        ? ""
-        : this.$q.localStorage.getItem("dashboard_url");
+      this.$q.localStorage.getItem('dashboard_url') === null
+        ? process.env.dashboard_url
+        : this.$q.localStorage.getItem('dashboard_url')
     this.dashboard_user =
-      this.$q.localStorage.getItem("dashboard_user") === null
-        ? ""
-        : this.$q.localStorage.getItem("dashboard_user");
+      this.$q.localStorage.getItem('dashboard_user') === null
+        ? process.env.dashboard_username
+        : this.$q.localStorage.getItem('dashboard_user')
     this.dashboard_password =
-      this.$q.localStorage.getItem("dashboard_password") === null
-        ? ""
-        : this.$q.localStorage.getItem("dashboard_password");
+      this.$q.localStorage.getItem('dashboard_password') === null
+        ? process.env.dashboard_password
+        : this.$q.localStorage.getItem('dashboard_password')
     this.admin_url =
-      this.$q.localStorage.getItem("admin_url") === null
-        ? ""
-        : this.$q.localStorage.getItem("admin_url");
+      this.$q.localStorage.getItem('admin_url') === null
+        ? process.env.admin_url // Admin Dev URL
+        : this.$q.localStorage.getItem('admin_url')
     this.admin_user =
-      this.$q.localStorage.getItem("admin_user") === null
-        ? ""
-        : this.$q.localStorage.getItem("admin_user");
+      this.$q.localStorage.getItem('admin_user') === null
+        ? process.env.admin_username // Admin Dev Username URL
+        : this.$q.localStorage.getItem('admin_user')
     this.admin_password =
-      this.$q.localStorage.getItem("admin_password") === null
-        ? ""
-        : this.$q.localStorage.getItem("admin_password");
+      this.$q.localStorage.getItem('admin_password') === null
+        ? process.env.admin_password // Admin Password Username URL
+        : this.$q.localStorage.getItem('admin_password')
   },
   methods: {
-    save() {
+    save () {
       // Quasar allows us to add loading spinners to our buttons
       // so we bind the loading property to the attribute on q-btn.
-      this.loading = true;
+      this.loading = true
       // The login method returns a promise.
-      var loginData = new FormData();
+      var loginData = new FormData()
       // loginData.append("dashboard_url", this.dashboard_url);
       // loginData.append("dashboard_user", this.dashboard_user);
       // loginData.append("dashboard_password", this.dashboard_password);
@@ -188,45 +189,45 @@ export default {
 
       this.$refs.loginForm.validate().then(success => {
         if (success) {
-          this.loading = false;
-          this.$q.localStorage.set("dashboard_url", this.dashboard_url);
-          this.$q.localStorage.set("dashboard_user", this.dashboard_user);
+          this.loading = false
+          this.$q.localStorage.set('dashboard_url', this.dashboard_url)
+          this.$q.localStorage.set('dashboard_user', this.dashboard_user)
           this.$q.localStorage.set(
-            "dashboard_password",
+            'dashboard_password',
             this.dashboard_password
-          );
-          this.$q.localStorage.set("admin_url", this.admin_url);
-          this.$q.localStorage.set("admin_user", this.admin_user);
-          this.$q.localStorage.set("admin_password", this.admin_password);
-          this.$q.localStorage.set("js_url", this.js_url);
+          )
+          this.$q.localStorage.set('admin_url', this.admin_url)
+          this.$q.localStorage.set('admin_user', this.admin_user)
+          this.$q.localStorage.set('admin_password', this.admin_password)
+          this.$q.localStorage.set('js_url', this.js_url)
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({
-            color: "positive",
-            message: "Save successful!"
-          });
+            color: 'positive',
+            message: 'Save successful!'
+          })
           // ...and redirect them to the index.
           // this.$router.push("/");
         } else {
           // oh no, user has filled in
           this.$q.notify({
-            color: "orange",
-            message: "Please input all required field!"
-          });
+            color: 'orange',
+            message: 'Please input all required field!'
+          })
         }
-      });
+      })
     }
-  }, //end method
-  data() {
+  }, // end method
+  data () {
     return {
-      admin_url: "",
-      dashboard_url: "",
-      admin_user: "",
-      admin_password: "",
-      dashboard_user: "",
-      dashboard_password: "",
-      js_url: ""
-    };
+      admin_url: '',
+      dashboard_url: '',
+      admin_user: '',
+      admin_password: '',
+      dashboard_user: '',
+      dashboard_password: '',
+      js_url: ''
+    }
   },
-  name: "PageConfig"
-};
+  name: 'PageConfig'
+}
 </script>

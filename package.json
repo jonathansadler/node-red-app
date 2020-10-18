@@ -1,6 +1,6 @@
 {
   "name": "node-red-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A mobile app for node-RED",
   "productName": "Node-RED app",
   "author": "Tran Vu Linh",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "quasar": "^1.0.0"
   },
