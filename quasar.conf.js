@@ -62,7 +62,7 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/handling-webpack
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
         // cfg.module.rules.push({
         //   enforce: 'pre',
         //   test: /\.(js|vue)$/,
@@ -78,7 +78,10 @@ module.exports = function (ctx) {
         dashboard_url: 'http://192.168.1.100:1880/ui',
         dashboard_username: 'user',
         dashboard_password: '123456',
-        js_url: 'http://192.168.1.100/linhtranvu.github.io/node-red/myscript.js'
+        js_admin: 'http://192.168.1.100/linhtranvu.github.io/node-red/admin.js',
+        js_dashboard: 'http://192.168.1.100/linhtranvu.github.io/node-red/dashboard.js',
+        js_editor: 'http://192.168.1.100/linhtranvu.github.io/node-red/editor.js',
+        tracking_status: true
       } : {
         // and on build (production):
         admin_url: '',
@@ -87,7 +90,10 @@ module.exports = function (ctx) {
         dashboard_url: '',
         dashboard_username: '',
         dashboard_password: '',
-        js_url: 'https://linhtranvu.github.io/node-red/myscript.js'
+        js_admin: 'https://linhtranvu.github.io/node-red/admin.js',
+        js_dashboard: 'https://linhtranvu.github.io/node-red/dashboard.js',
+        js_editor: 'https://linhtranvu.github.io/node-red/editor.js',
+        tracking_status: true
       }
     },
 
@@ -146,30 +152,30 @@ module.exports = function (ctx) {
         background_color: '#ffffff',
         theme_color: '#027be3',
         icons: [{
-            src: 'icons/icon-128x128.png',
-            sizes: '128x128',
-            type: 'image/png'
-          },
-          {
-            src: 'icons/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'icons/icon-256x256.png',
-            sizes: '256x256',
-            type: 'image/png'
-          },
-          {
-            src: 'icons/icon-384x384.png',
-            sizes: '384x384',
-            type: 'image/png'
-          },
-          {
-            src: 'icons/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
+          src: 'icons/icon-128x128.png',
+          sizes: '128x128',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon-256x256.png',
+          sizes: '256x256',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon-384x384.png',
+          sizes: '384x384',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png'
+        }
         ]
       }
     },
@@ -210,7 +216,7 @@ module.exports = function (ctx) {
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack( /* cfg */ ) {
+      extendWebpack (/* cfg */) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }

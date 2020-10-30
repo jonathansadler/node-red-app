@@ -1,23 +1,38 @@
 <template>
   <q-page>
-    <div
-      class="q-pa-md q-gutter-md items-center content-center justify-center text-center"
-    >
-      <div class="row">
-        This is a mobile app for Node-RED. Hope you guys like it.
-        <ul>
-          <li>
-            Project Github:<a href="https://github.com/linhtranvu/node-red-app"
-              >https://github.com/linhtranvu/node-red-app</a
-            >
-          </li>
-          <li>
-            Author: Linh Tran Vu. Email: linhtranvu@gmail.com
-          </li>
-        </ul>
+    <div class="q-pa-md q-gutter-md ">
+      <q-card flat bordered class="my-card">
+        <q-card-section>
+          <div class="text-h6 text-blue">
+            This is a mobile app client for Node-RED. Hope you guys like it.
+          </div>
+        </q-card-section>
 
-        <br />
-      </div>
+        <q-separator inset />
+
+        <q-card-section>
+          <ul>
+            <li>
+              Project Github:
+              <a
+                class="text-deep-orange "
+                href="https://github.com/linhtranvu/node-red-app1"
+                >https://github.com/linhtranvu/node-red-app</a
+              >
+            </li>
+            <li>
+              Author: Linh Tran Vu. Email:
+              <span class="text-deep-orange ">linhtranvu@gmail.com</span>
+            </li>
+          </ul>
+        </q-card-section>
+      </q-card>
+      <iframe
+        style="border:none;"
+        src="https://linhtranvu.github.io/node-red/about.htm"
+        width="100%"
+        height="1500px"
+      ></iframe>
     </div>
   </q-page>
 </template>

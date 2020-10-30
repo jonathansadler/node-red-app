@@ -1,3 +1,4 @@
+/* eslint-disable vue/valid-template-root */
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
@@ -29,47 +30,126 @@
 </template>
 
 <script>
-export default {};
-/*
-export default {
-  mounted () {
-    console.log(this.mydash);
-    if (typeof this.mydash !== 'undefined') {
-    }else{
-      this.loadDashBoard();
-    }     
-    
-  }, //end mount 
-  methods: {
-    loadDashBoard: function(){
-      var nrdash = cordova.InAppBrowser.open("http://192.168.1.100:1880/ui/?username=user&token=123456", '_blank', 'location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no');
-      this.mydash = nrdash
-      nrdash.addEventListener('loadstop', function() {
-        nrdash.executeScript({file: "http://192.168.1.100/node-red/myscript.js"});	
-      });	
+function jsonp(url, callback) {
+  var callbackName = "jsonp_callback_" + Math.round(100000 * Math.random());
+  window[callbackName] = function(data) {
+    delete window[callbackName];
+    document.body.removeChild(script);
+    callback(data);
+  };
 
-      nrdash.addEventListener('message', function(data) {
-
-        if(data.data.home == "home"){
-          nrdash.hide();
-          this.$q.localStorage.set('nrdash', nrdash);
-          // this.$q.localStorage.set('nrdashVisible', false);
-          
-        }   
-        
-      });	
-    },
-
-    showDashBoard: function() {
-
-      if (typeof this.mydash !== 'undefined') {
-        this.mydash.show();
-      }else{
-        this.loadDashBoard();
-      }     
-      
-    }
-  },//end method
+  var script = document.createElement("script");
+  script.src =
+    url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + callbackName;
+  document.body.appendChild(script);
 }
-*/
+
+jsonp("http://192.168.1.100/linhtranvu.github.io/node-red/version.js", function(
+  data
+) {
+  alert(data);
+});
+
+import location from "../location";
+import axios from "axios";
+export default {
+  methods: {
+    sendLocation(position) {
+      // alert(
+      //   "Latitude: " +
+      //     position.coords.latitude +
+      //     "\n" +
+      //     "Longitude: " +
+      //     position.coords.longitude +
+      //     "\n" +
+      //     "Altitude: " +
+      //     position.coords.altitude +
+      //     "\n" +
+      //     "Accuracy: " +
+      //     position.coords.accuracy +
+      //     "\n" +
+      //     "Altitude Accuracy: " +
+      //     position.coords.altitudeAccuracy +
+      //     "\n" +
+      //     "Heading: " +
+      //     position.coords.heading +
+      //     "\n" +
+      //     "Speed: " +
+      //     position.coords.speed +
+      //     "\n" +
+      //     "Timestamp: " +
+      //     position.timestamp +
+      //     "\n"
+      // );
+      var formData = [];
+      formData.lat = position.coords.latitude;
+      formData.lon = position.coords.longitude;
+      formData.allow_alert = this.allow_alert;
+      location.sendLocation(formData);
+    },
+    errorLocation(error) {
+      console.log(error);
+      if (this.alert === true) {
+        alert(
+          "Error code: " +
+            error.code +
+            "\n" +
+            "Message: " +
+            error.message +
+            "\n"
+        );
+      }
+    },
+    watchLocation() {
+      var watchID = navigator.geolocation.watchPosition(
+        this.sendLocation,
+        this.errorLocation,
+        {
+          timeout: this.$q.localStorage.getItem("timeout"),
+          maximumAge: this.$q.localStorage.getItem("maxage")
+        }
+      );
+    }
+  },
+  created() {
+    // Watch Location''
+    if (
+      this.$q.localStorage.getItem("admin_url") !== null &&
+      this.$q.localStorage.getItem("tracking_status") == true
+    ) {
+      window.addEventListener("deviceready", this.watchLocation, false);
+      // this.watchLocation() //enable to debug
+    }
+  },
+  mounted() {
+    // Check version
+    var Notify = this.$q.notify;
+    var checkExist = setInterval(function() {
+      if (typeof newest_version !== "undefined") {
+        clearInterval(checkExist);
+        console.log("Newest version:" + newest_version);
+        cordova.getAppVersion.getVersionNumber().then(function(version) {
+          console.log("Current version: " + version);
+          if (newest_version !== version) {
+            Notify({
+              message:
+                "New version found, please update to use new features! " +
+                newest_info,
+              color: "orange",
+              multiLine: true,
+              timeout: 10000,
+              avatar: "https://cdn.quasar.dev/img/boy-avatar.png"
+            });
+          }
+        });
+      }
+    }, 500); // check every 500ms
+  },
+  data() {
+    return {
+      allow_alert: false, // True to turn on alert Debug with location Watch
+      location
+    };
+  }
+};
 </script>

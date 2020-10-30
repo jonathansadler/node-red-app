@@ -1,5 +1,5 @@
-/* eslint-disable camelcase */
-/* eslint-disable eqeqeq */
+/* eslint-disable camelcase */ /* eslint-disable camelcase */ /* eslint-disable
+eqeqeq */
 <template>
   <div class="q-pa-md">
     <div
@@ -35,188 +35,191 @@
         /><br />
         Configurations
       </div>
+      <!--
       <div>
         <q-btn to="/camera" size="xl" round color="red" icon="videocam" />
         <br />Camera
       </div>
+      -->
       <div>
         <q-btn to="/device" size="xl" round color="lime-14" icon="router" />
         <br />Device
       </div>
       <div>
+        <q-btn
+          @click="sendTestLocation()"
+          size="xl"
+          round
+          color="amber-4"
+          icon="location_on"
+        />
+        <br />Test Location
+      </div>
+      <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
         <br />About
       </div>
-      <!-- <div>
-        <q-btn @click="sendLocation(1111)" size="xl" round color="purple" icon="location" />
-        <br />Send Location
-      </div> -->
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from "axios";
+import location from "../location";
 
-var sendUrl = ''
-var nrAdmin = ''
+var sendUrl = "";
+var nrAdmin = "";
 
-document.addEventListener('deviceready', onDeviceReady, false)
-function onDeviceReady () {
-
-}
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {}
 
 export default {
-  mounted () {
-    var dashboard_url = this.$q.localStorage.getItem('dashboard_url')
-    console.log('dashboard_url:' + dashboard_url)
+  data() {
+    return {
+      allow_alert: true,
+      location
+    };
+  },
+  mounted() {
+    var dashboard_url = this.$q.localStorage.getItem("dashboard_url");
+    console.log("dashboard_url:" + dashboard_url);
 
     if (dashboard_url === null) {
-      this.$router.push('/config')
-    } else { // If config saved
-      // Send Location data
-      navigator.geolocation.getCurrentPosition(this.sendLocation, this.errorLocation)
-      var watchID = navigator.geolocation.watchPosition(
-        this.sendLocation,
-        this.errorLocation,
-        { timeout: 30000, maximumAge: 20000 }
-      )
-
-      this.loadDashBoard()
+      this.$router.push("/config");
+    } else {
+      // If config saved
+      // Load dashboard
+      // this.loadDashBoard()
     }
-    console.log(navigator.geolocation)
   }, // end mount
   methods: {
-    loadAdmin: function () {
+    sendTestLocation() {
+      this.allow_alert = true;
+      navigator.geolocation.getCurrentPosition(
+        this.sendLocation,
+        this.errorLocation
+      );
+    },
+    loadAdmin: function() {
       nrAdmin = cordova.InAppBrowser.open(
-        this.$q.localStorage.getItem('admin_url'),
-        '_blank',
-        'location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no'
-      )
+        this.$q.localStorage.getItem("admin_url"),
+        "_blank",
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,clearcache=yes"
+      );
 
-      var MylocalStorage = this.$q.localStorage
+      var MylocalStorage = this.$q.localStorage;
 
-      nrAdmin.addEventListener('loadstop', function () {
-        var admin_user = MylocalStorage.getItem('admin_user') // LOOIX O DAY DEO BIET TAI SAO
-        var admin_password = MylocalStorage.getItem('admin_password')
-        var admin_url = MylocalStorage.getItem('admin_url')
-        var dashboard_url = MylocalStorage.getItem('dashboard_url')
-        var dashboard_username = MylocalStorage.getItem('dashboard_user')
-        var dashboard_password = MylocalStorage.getItem('dashboard_password')
+      nrAdmin.addEventListener("loadstop", function() {
+        var admin_user = MylocalStorage.getItem("admin_user");
+        var admin_password = MylocalStorage.getItem("admin_password");
+        var admin_url = MylocalStorage.getItem("admin_url");
+        var dashboard_url = MylocalStorage.getItem("dashboard_url");
+        var dashboard_username = MylocalStorage.getItem("dashboard_user");
+        var dashboard_password = MylocalStorage.getItem("dashboard_password");
+
+        var location_url = MylocalStorage.getItem("location_url");
+        var call_url = "";
+        if (location_url !== "") {
+          call_url = location_url;
+        } else {
+          call_url = admin_url + "/location";
+        }
 
         nrAdmin.executeScript(
           {
-            file: MylocalStorage.getItem('js_url')
+            file: MylocalStorage.getItem("js_admin")
           },
-          function () {
+          function() {
             nrAdmin.executeScript({
-              code: `loginAdmin('${admin_user}','${admin_password}','${admin_url}','${dashboard_url}','${dashboard_username}','${dashboard_password}')`
-            })
+              code: `loginAdmin('${admin_user}','${admin_password}','${admin_url}','${dashboard_url}','${dashboard_username}','${dashboard_password}','${call_url}')`
+            });
           }
-        )
-      })
-      var sendLocation = this.sendLocation
-      var errorLocation = this.errorLocation
-      nrAdmin.addEventListener('message', function (data) {
-        if (data.data.home == 'home') {
-          nrAdmin.close()
+        );
+      });
+      var sendLocation = this.sendLocation;
+      var errorLocation = this.errorLocation;
+      nrAdmin.addEventListener("message", function(data) {
+        if (data.data.home == "home") {
+          nrAdmin.close();
         }
-        if (data.data.location == 'location') {
-          console.log('home')
-          navigator.geolocation.getCurrentPosition(sendLocation, errorLocation)
+        if (data.data.location == "location") {
+          console.log("home");
+          this.allow_alert = true;
+          navigator.geolocation.getCurrentPosition(sendLocation, errorLocation);
         }
-      })
+      });
     },
 
-    loadDashBoard: function () {
-      var nrdashUrl =
-        this.$q.localStorage.getItem('dashboard_url') +
-        '/?username=' +
-        this.$q.localStorage.getItem('dashboard_user') +
-        '&token=' +
-        this.$q.localStorage.getItem('dashboard_password')
-      console.log(nrdashUrl)
-      var nrdash = cordova.InAppBrowser.open(
-        nrdashUrl,
-        '_blank',
-        'location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no'
-      )
-      this.mydash = nrdash
-      var localStorage = this.$q.localStorage
-      nrdash.addEventListener('loadstop', function () {
-        nrdash.executeScript({
-          file: localStorage.getItem('js_url')
-        })
-      })
-
-      nrdash.addEventListener('message', function (data) {
-        if (data.data.home == 'home') {
-          nrdash.close()
-          localStorage.set('nrdash', nrdash)
-        }
-      })
+    sendLocation: function(position) {
+      console.log(position);
+      var formData = [];
+      formData.lat = position.coords.latitude;
+      formData.lon = position.coords.longitude;
+      formData.allow_alert = this.allow_alert;
+      location.sendLocation(formData);
     },
-
-    showDashBoard: function () {
-      var nrdash = this.$q.localStorage.getItem('nrdash')
-      // console.log(nrdash);
-      if (nrdash !== 'undefined') {
-        // if (typeof this.mydash !== 'undefined') {
-        this.mydash.show()
-      } else {
-        this.loadDashBoard()
+    errorLocation: function() {
+      if (this.allow_alert === true) {
+        alert(
+          "Error code: " +
+            error.code +
+            "\n" +
+            "Message: " +
+            error.message +
+            "\n"
+        );
       }
     },
 
-    sendLocation: function (position) {
-      // console.log(nrAdmin)
-      // alert(
-      //   "Latitude: " +
-      //     position.coords.latitude +
-      //     "\n" +
-      //     "Longitude: " +
-      //     position.coords.longitude +
-      //     "\n" +
-      //     "Altitude: " +
-      //     position.coords.altitude +
-      //     "\n" +
-      //     "Accuracy: " +
-      //     position.coords.accuracy +
-      //     "\n" +
-      //     "Altitude Accuracy: " +
-      //     position.coords.altitudeAccuracy +
-      //     "\n" +
-      //     "Heading: " +
-      //     position.coords.heading +
-      //     "\n" +
-      //     "Speed: " +
-      //     position.coords.speed +
-      //     "\n" +
-      //     "Timestamp: " +
-      //     position.timestamp +
-      //     "\n"
-      // );
+    loadDashBoard: function() {
+      var url = this.$q.localStorage.getItem("dashboard_url");
+      var username = this.$q.localStorage.getItem("dashboard_user");
+      var password = this.$q.localStorage.getItem("dashboard_password");
+      var nrdashUrl =
+        this.$q.localStorage.getItem("dashboard_url") +
+        "/?username=" +
+        this.$q.localStorage.getItem("dashboard_user") +
+        "&token=" +
+        this.$q.localStorage.getItem("dashboard_password");
+      console.log(nrdashUrl);
+      var nrdash = cordova.InAppBrowser.open(
+        nrdashUrl,
+        "_blank",
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
+      );
+      this.mydash = nrdash;
+      var localStorage = this.$q.localStorage;
+      nrdash.addEventListener("loadstop", function() {
+        nrdash.executeScript(
+          {
+            file: localStorage.getItem("js_dashboard")
+          },
+          function() {
+            nrdash.executeScript({
+              code: `login('${url}','${username}','${password}')`
+            });
+          }
+        );
+      });
 
-      var sendLocationUrl = `${this.$q.localStorage.getItem('admin_url')}/location?lat=${position.coords.latitude}&lon=${position.coords.longitude}`
-      // alert(`Call URL: ${sendLocationUrl}. If dont receive data in Debug, enter URL in browser to test`)
-      axios
-        .get(
-      `${sendLocationUrl}`
-      // `${sendLocationUrl}?lat=1&lon=2`
-        )
-        .then(response => {})
-        .catch(() => {
-          alert(`Call URL Fail: ${sendLocationUrl}. Enter URL in browser to test`)
-        })
+      nrdash.addEventListener("message", function(data) {
+        if (data.data.home == "home") {
+          nrdash.close();
+          localStorage.set("nrdash", nrdash);
+        }
+      });
     },
 
-    // onError Callback receives a PositionError object
-    //
-    errorLocation: function (error) {
-      console.log(error)
-      alert('Error code: ' + error.code + '\n' + 'Message: ' + error.message + '\n')
+    showDashBoard: function() {
+      var nrdash = this.$q.localStorage.getItem("nrdash");
+      // console.log(nrdash);
+      if (nrdash !== "undefined") {
+        // if (typeof this.mydash !== 'undefined') {
+        this.mydash.show();
+      } else {
+        this.loadDashBoard();
+      }
     }
-
   }, // end method
-  name: 'PageIndex'
-}
+  name: "PageIndex"
+};
 </script>
