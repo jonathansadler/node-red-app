@@ -124,12 +124,13 @@ export default {
   mounted() {
     // Check version
     var Notify = this.$q.notify;
+    var script_storage_version = this.$q.localStorage.getItem("script_version");
+    var myStorage = this.$q.localStorage;
     var checkExist = setInterval(function() {
       if (typeof newest_version !== "undefined") {
         clearInterval(checkExist);
-        console.log("Newest version:" + newest_version);
+        //Check app version
         cordova.getAppVersion.getVersionNumber().then(function(version) {
-          console.log("Current version: " + version);
           if (newest_version !== version) {
             Notify({
               message:
@@ -141,9 +142,26 @@ export default {
               avatar: "https://cdn.quasar.dev/img/boy-avatar.png"
             });
           }
-        });
+        }); //end check app version
+
+        //Check script version
+        if (typeof script_storage_version !== "undefined") {
+          if (script_storage_version !== script_version) {
+            Notify({
+              message: "New script version updated. " + script_info,
+              color: "orange",
+              multiLine: true,
+              timeout: 10000,
+              position: "top",
+              avatar: "https://cdn.quasar.dev/img/boy-avatar.png"
+            });
+            myStorage.set("script_version", script_version);
+          }
+        } else {
+          myStorage.set("script_version", script_version);
+        }
       }
-    }, 500); // check every 500ms
+    }, 2000); // check every 500ms
   },
   data() {
     return {

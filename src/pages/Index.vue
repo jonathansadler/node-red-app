@@ -180,9 +180,8 @@ export default {
         this.$q.localStorage.getItem("dashboard_user") +
         "&token=" +
         this.$q.localStorage.getItem("dashboard_password");
-      console.log(nrdashUrl);
       var nrdash = cordova.InAppBrowser.open(
-        nrdashUrl,
+        url,
         "_blank",
         "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
       );

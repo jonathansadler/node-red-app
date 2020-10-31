@@ -198,6 +198,17 @@
             label="JS to inject to Dashboard"
           >
           </q-input>
+          <q-input
+            ref="js_editor"
+            v-model="js_editor"
+            outlined
+            :rules="[
+              value => value.includes('http') || 'Must contain http or https'
+            ]"
+            type="text"
+            label="JS to create Editor"
+          >
+          </q-input>
           <div
             class="q-pa-md q-gutter-sm items-center content-center justify-center text-left"
           >
