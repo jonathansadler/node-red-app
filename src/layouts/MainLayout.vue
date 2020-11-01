@@ -107,18 +107,18 @@ export default {
             "\n"
         );
       }
-    },
-    watchLocation() {
-      alert("device ready");
-      var watchID = navigator.geolocation.watchPosition(
-        this.sendLocation,
-        this.errorLocation,
-        {
-          timeout: this.$q.localStorage.getItem("timeout"),
-          maximumAge: this.$q.localStorage.getItem("maxage")
-        }
-      );
     }
+    // watchLocation() {
+    //   alert("device ready");
+    //   var watchID = navigator.geolocation.watchPosition(
+    //     this.sendLocation,
+    //     this.errorLocation,
+    //     {
+    //       timeout: this.$q.localStorage.getItem("timeout"),
+    //       maximumAge: this.$q.localStorage.getItem("maxage")
+    //     }
+    //   );
+    // }
   },
   created() {},
   mounted() {
@@ -127,16 +127,18 @@ export default {
       this.$q.localStorage.getItem("admin_url") !== null &&
       this.$q.localStorage.getItem("tracking_status") == true
     ) {
-      var mySendLocation = this.sendLocation
-      var myErrorLocation = this.errorLocation
+      var mySendLocation = this.sendLocation;
+      var myErrorLocation = this.errorLocation;
+      var myTimeout = this.$q.localStorage.getItem("timeout");
+      var myMaxage = this.$q.localStorage.getItem("maxage");
       setTimeout(function() {
-        alert("device ready watch");
+        // alert("device ready watch");
         var watchID = navigator.geolocation.watchPosition(
           mySendLocation,
           myErrorLocation,
           {
-            timeout: this.$q.localStorage.getItem("timeout"),
-            maximumAge: this.$q.localStorage.getItem("maxage")
+            timeout: myTimeout,
+            maximumAge: myMaxage
           }
         );
       }, 10000);
@@ -187,7 +189,7 @@ export default {
   },
   data() {
     return {
-      allow_alert: "app", // app to turn on alert Debug with location Watch
+      allow_alert: "false", // app to turn on alert Debug with location Watch
       location
     };
   }
