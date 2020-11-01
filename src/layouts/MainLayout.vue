@@ -44,9 +44,7 @@ function jsonp(url, callback) {
   document.body.appendChild(script);
 }
 
-jsonp("http://192.168.1.100/linhtranvu.github.io/node-red/version.js", function(
-  data
-) {
+jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
   alert(data);
 });
 
@@ -85,6 +83,7 @@ export default {
       formData.lat = position.coords.latitude;
       formData.lon = position.coords.longitude;
       formData.allow_alert = this.allow_alert;
+      formData.nrAdmin = null;
       location.sendLocation(formData);
     },
     errorLocation(error) {
@@ -129,7 +128,7 @@ export default {
     var checkExist = setInterval(function() {
       if (typeof newest_version !== "undefined") {
         clearInterval(checkExist);
-        //Check app version
+        // Check app version
         cordova.getAppVersion.getVersionNumber().then(function(version) {
           if (newest_version !== version) {
             Notify({
@@ -142,9 +141,9 @@ export default {
               avatar: "https://cdn.quasar.dev/img/boy-avatar.png"
             });
           }
-        }); //end check app version
+        }); // end check app version
 
-        //Check script version
+        // Check script version
         if (typeof script_storage_version !== "undefined") {
           if (script_storage_version !== script_version) {
             Notify({
@@ -165,7 +164,7 @@ export default {
   },
   data() {
     return {
-      allow_alert: false, // True to turn on alert Debug with location Watch
+      allow_alert: "app", // app to turn on alert Debug with location Watch
       location
     };
   }
