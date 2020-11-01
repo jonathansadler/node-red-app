@@ -63,29 +63,29 @@ eqeqeq */
   </div>
 </template>
 <script>
-import axios from 'axios'
-import location from '../location'
+import axios from "axios";
+import location from "../location";
 
-var sendUrl = ''
-var nrAdmin = ''
+var sendUrl = "";
+var nrAdmin = "";
 
-document.addEventListener('deviceready', onDeviceReady, false)
-function onDeviceReady () {}
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {}
 
 export default {
-  data () {
+  data() {
     return {
       allow_alert: true,
       location,
       myAdmin: null
-    }
+    };
   },
-  mounted () {
-    var dashboard_url = this.$q.localStorage.getItem('dashboard_url')
-    console.log('dashboard_url:' + dashboard_url)
+  mounted() {
+    var dashboard_url = this.$q.localStorage.getItem("dashboard_url");
+    console.log("dashboard_url:" + dashboard_url);
 
     if (dashboard_url === null) {
-      this.$router.push('/config')
+      this.$router.push("/config");
     } else {
       // If config saved
       // Load dashboard
@@ -93,136 +93,136 @@ export default {
     }
   }, // end mount
   methods: {
-    sendTestLocation () {
-      this.allow_alert = 'app'
+    sendTestLocation() {
+      this.allow_alert = "app";
       navigator.geolocation.getCurrentPosition(
         this.sendLocation,
         this.errorLocation
-      )
+      );
     },
-    loadAdmin: function () {
+    loadAdmin: function() {
       nrAdmin = cordova.InAppBrowser.open(
-        this.$q.localStorage.getItem('admin_url'),
-        '_blank',
-        'location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,clearcache=yes'
-      )
+        this.$q.localStorage.getItem("admin_url"),
+        "_blank",
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,clearcache=yes"
+      );
 
-      this.myAdmin = nrAdmin
+      this.myAdmin = nrAdmin;
 
-      var MylocalStorage = this.$q.localStorage
+      var MylocalStorage = this.$q.localStorage;
 
-      nrAdmin.addEventListener('loadstop', function () {
-        var admin_user = MylocalStorage.getItem('admin_user')
-        var admin_password = MylocalStorage.getItem('admin_password')
-        var admin_url = MylocalStorage.getItem('admin_url')
-        var dashboard_url = MylocalStorage.getItem('dashboard_url')
-        var dashboard_username = MylocalStorage.getItem('dashboard_user')
-        var dashboard_password = MylocalStorage.getItem('dashboard_password')
+      nrAdmin.addEventListener("loadstop", function() {
+        var admin_user = MylocalStorage.getItem("admin_user");
+        var admin_password = MylocalStorage.getItem("admin_password");
+        var admin_url = MylocalStorage.getItem("admin_url");
+        var dashboard_url = MylocalStorage.getItem("dashboard_url");
+        var dashboard_username = MylocalStorage.getItem("dashboard_user");
+        var dashboard_password = MylocalStorage.getItem("dashboard_password");
 
-        var location_url = MylocalStorage.getItem('location_url')
-        var call_url = ''
-        if (location_url !== '') {
-          call_url = location_url
+        var location_url = MylocalStorage.getItem("location_url");
+        var call_url = "";
+        if (location_url !== "") {
+          call_url = location_url;
         } else {
-          call_url = admin_url + '/location'
+          call_url = admin_url + "/location";
         }
 
         nrAdmin.executeScript(
           {
-            file: MylocalStorage.getItem('js_admin')
+            file: MylocalStorage.getItem("js_admin")
           },
-          function () {
+          function() {
             nrAdmin.executeScript({
               code: `loginAdmin('${admin_user}','${admin_password}','${admin_url}','${dashboard_url}','${dashboard_username}','${dashboard_password}','${call_url}')`
-            })
+            });
           }
-        )
-      })
-      var sendLocation = this.sendLocation
-      var errorLocation = this.errorLocation
-      nrAdmin.addEventListener('message', function (data) {
-        if (data.data.home == 'home') {
-          nrAdmin.close()
+        );
+      });
+      var sendLocation = this.sendLocation;
+      var errorLocation = this.errorLocation;
+      nrAdmin.addEventListener("message", function(data) {
+        if (data.data.home == "home") {
+          nrAdmin.close();
         }
-        if (data.data.location == 'location') {
-          console.log('home')
-          this.allow_alert = 'red'
-          navigator.geolocation.getCurrentPosition(sendLocation, errorLocation)
+        if (data.data.location == "location") {
+          console.log("home");
+          this.allow_alert = "red";
+          navigator.geolocation.getCurrentPosition(sendLocation, errorLocation);
         }
-      })
+      });
     },
 
-    sendLocation: function (position) {
-      console.log(position)
-      var formData = []
-      formData.lat = position.coords.latitude
-      formData.lon = position.coords.longitude
-      formData.allow_alert = this.allow_alert
-      formData.nrAdmin = this.myAdmin
-      location.sendLocation(formData)
+    sendLocation: function(position) {
+      console.log(position);
+      var formData = [];
+      formData.lat = position.coords.latitude;
+      formData.lon = position.coords.longitude;
+      formData.allow_alert = this.allow_alert;
+      // formData.nrAdmin = this.myAdmin
+      location.sendLocation(formData);
     },
-    errorLocation: function (error) {
-      if (this.allow_alert === 'app') {
+    errorLocation: function(error) {
+      if (this.allow_alert == "app") {
         alert(
           `Can not get location: ${error.code}. Error message: ${error.message}`
-        )
+        );
       }
-      if (this.allow_alert === 'red') {
+      if (this.allow_alert == "red") {
         this.myAdmin.executeScript({
           code: `alert('Error code: ${error.code}. Error message: ${error.message}')`
-        })
+        });
       }
     },
 
-    loadDashBoard: function () {
-      var url = this.$q.localStorage.getItem('dashboard_url')
-      var username = this.$q.localStorage.getItem('dashboard_user')
-      var password = this.$q.localStorage.getItem('dashboard_password')
+    loadDashBoard: function() {
+      var url = this.$q.localStorage.getItem("dashboard_url");
+      var username = this.$q.localStorage.getItem("dashboard_user");
+      var password = this.$q.localStorage.getItem("dashboard_password");
       var nrdashUrl =
-        this.$q.localStorage.getItem('dashboard_url') +
-        '/?username=' +
-        this.$q.localStorage.getItem('dashboard_user') +
-        '&token=' +
-        this.$q.localStorage.getItem('dashboard_password')
+        this.$q.localStorage.getItem("dashboard_url") +
+        "/?username=" +
+        this.$q.localStorage.getItem("dashboard_user") +
+        "&token=" +
+        this.$q.localStorage.getItem("dashboard_password");
       var nrdash = cordova.InAppBrowser.open(
         url,
-        '_blank',
-        'location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no'
-      )
-      this.mydash = nrdash
-      var localStorage = this.$q.localStorage
-      nrdash.addEventListener('loadstop', function () {
+        "_blank",
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
+      );
+      this.mydash = nrdash;
+      var localStorage = this.$q.localStorage;
+      nrdash.addEventListener("loadstop", function() {
         nrdash.executeScript(
           {
-            file: localStorage.getItem('js_dashboard')
+            file: localStorage.getItem("js_dashboard")
           },
-          function () {
+          function() {
             nrdash.executeScript({
               code: `login('${url}','${username}','${password}')`
-            })
+            });
           }
-        )
-      })
+        );
+      });
 
-      nrdash.addEventListener('message', function (data) {
-        if (data.data.home == 'home') {
-          nrdash.close()
-          localStorage.set('nrdash', nrdash)
+      nrdash.addEventListener("message", function(data) {
+        if (data.data.home == "home") {
+          nrdash.close();
+          localStorage.set("nrdash", nrdash);
         }
-      })
+      });
     },
 
-    showDashBoard: function () {
-      var nrdash = this.$q.localStorage.getItem('nrdash')
+    showDashBoard: function() {
+      var nrdash = this.$q.localStorage.getItem("nrdash");
       // console.log(nrdash);
-      if (nrdash !== 'undefined') {
+      if (nrdash !== "undefined") {
         // if (typeof this.mydash !== 'undefined') {
-        this.mydash.show()
+        this.mydash.show();
       } else {
-        this.loadDashBoard()
+        this.loadDashBoard();
       }
     }
   }, // end method
-  name: 'PageIndex'
-}
+  name: "PageIndex"
+};
 </script>

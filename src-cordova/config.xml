@@ -78,6 +78,6 @@
     <allow-navigation href="about:*" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-        <string>need location access to send data to user's Node-RED server</string>
+        <string>Need location access to send data to user's Node-RED server</string>
     </edit-config>
 </widget>

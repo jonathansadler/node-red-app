@@ -92,7 +92,7 @@ export default {
       formData.lat = position.coords.latitude;
       formData.lon = position.coords.longitude;
       formData.allow_alert = this.allow_alert;
-      formData.nrAdmin = null;
+      // formData.nrAdmin = null;
       location.sendLocation(formData);
     },
     errorLocation(error) {
@@ -120,21 +120,30 @@ export default {
       );
     }
   },
-  created() {
+  created() {},
+  mounted() {
     // Watch Location''
     if (
       this.$q.localStorage.getItem("admin_url") !== null &&
       this.$q.localStorage.getItem("tracking_status") == true
     ) {
-      var watchLocation = this.watchLocation;
+      var mySendLocation = this.sendLocation
+      var myErrorLocation = this.errorLocation
       setTimeout(function() {
-        watchLocation;
+        alert("device ready watch");
+        var watchID = navigator.geolocation.watchPosition(
+          mySendLocation,
+          myErrorLocation,
+          {
+            timeout: this.$q.localStorage.getItem("timeout"),
+            maximumAge: this.$q.localStorage.getItem("maxage")
+          }
+        );
       }, 10000);
       // window.addEventListener("deviceready", this.watchLocation, false);
       // this.watchLocation() //enable to debug
     }
-  },
-  mounted() {
+
     // Check version
     var Notify = this.$q.notify;
     var script_storage_version = this.$q.localStorage.getItem("script_version");

@@ -14,10 +14,10 @@ export default {
     var location_security = LocalStorage.getItem('location_security')
     var call_url = ''
     var allow_alert = formData.allow_alert
-    var nrAdmin = formData.nrAdmin
+    // var nrAdmin = formData.nrAdmin
 
-    this.myAlert = formData.allow_alert
-    this.myAdmin = formData.nrAdmin
+    // this.myAlert = formData.allow_alert
+    // this.myAdmin = formData.nrAdmin
 
     if (location_url !== '') {
       call_url = location_url
@@ -39,10 +39,9 @@ export default {
           alert(`Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}`)
         }
         if (allow_alert === 'red') {
-          nrAdmin.executeScript({
+          // nrAdmin.executeScript({
             // code: `alert('Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}')`
-            code: `$('#dialog_content_test_loc').html('Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}')`
-          })
+          // })
         }
         return null
       }) // parses JSON response into native JavaScript objects
@@ -52,9 +51,9 @@ export default {
           alert(error + ' ' + call_url)
         }
         if (allow_alert === 'red') {
-          nrAdmin.executeScript({
-            code: `alert('${error}. ${call_url}')`
-          })
+          // nrAdmin.executeScript({
+          //   code: `alert('${error}. ${call_url}')`
+          // })
         }
       })
   },
@@ -63,9 +62,9 @@ export default {
       alert('Error code: ' + error.code + '\n' + 'Message: ' + error.message + '\n')
     }
     if (myAlert === 'red') {
-      nrAdmin.executeScript({
-        code: `alert('${error}. ${call_url}')`
-      })
+      // nrAdmin.executeScript({
+      //   code: `alert('${error}. ${call_url}')`
+      // })
     }
   }
 }
