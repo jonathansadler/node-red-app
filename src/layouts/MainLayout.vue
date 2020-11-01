@@ -48,6 +48,15 @@ jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
   alert(data);
 });
 
+document.addEventListener(
+  "deviceready",
+  () => {
+    // it's only now that we are sure
+    // the event has triggered
+  },
+  false
+);
+
 import location from "../location";
 import axios from "axios";
 export default {
@@ -100,6 +109,7 @@ export default {
       }
     },
     watchLocation() {
+      alert("device ready");
       var watchID = navigator.geolocation.watchPosition(
         this.sendLocation,
         this.errorLocation,
@@ -116,7 +126,11 @@ export default {
       this.$q.localStorage.getItem("admin_url") !== null &&
       this.$q.localStorage.getItem("tracking_status") == true
     ) {
-      window.addEventListener("deviceready", this.watchLocation, false);
+      var watchLocation = this.watchLocation;
+      setTimeout(function() {
+        watchLocation;
+      }, 10000);
+      // window.addEventListener("deviceready", this.watchLocation, false);
       // this.watchLocation() //enable to debug
     }
   },

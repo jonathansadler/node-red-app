@@ -36,11 +36,12 @@ export default {
     })
       .then(res => {
         if (allow_alert === 'app') {
-          alert(`Success: ' ${call_url};lat=${formData.lat};lon=${formData.lon}`)
+          alert(`Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}`)
         }
         if (allow_alert === 'red') {
           nrAdmin.executeScript({
-            code: `alert('Success: ${call_url};lat=${formData.lat};lon=${formData.lon}')`
+            // code: `alert('Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}')`
+            code: `$('#dialog_content_test_loc').html('Success: ${call_url}; lat=${formData.lat};lon=${formData.lon}')`
           })
         }
         return null
