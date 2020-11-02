@@ -75,7 +75,7 @@ function onDeviceReady() {
     url: "http://linhtranvu.mooo.com:1880/location",
     httpHeaders: {
       "X-FOO": "bar",
-      Authorization: "Basic dXNlcjoxMjM0NTY=" // window.btoa('YOUR_USERNAME:YOUR_PASSWORD')
+      Authorization: "Basic dXNlcjpnYXVtaWFuZ3U=" // window.btoa('YOUR_USERNAME:YOUR_PASSWORD')
     },
     // customize post properties
     postTemplate: {
