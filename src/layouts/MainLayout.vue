@@ -59,7 +59,7 @@ jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
 // var myTest = null;
 
 function onDeviceReady() {
-  alert(1111);
+  // alert(1111);
   // myTest();
   BackgroundGeolocation.configure({
     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
