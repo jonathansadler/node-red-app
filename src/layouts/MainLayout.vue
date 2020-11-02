@@ -54,6 +54,9 @@ jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
 
 //BACKGROUND GEOLOCATION
 
+function onDeviceReady() {}
+
+/*
 function onDeviceReady() {
   // alert(1111);
   var location_url = LocalStorage.getItem("location_url");
@@ -193,6 +196,8 @@ function onDeviceReady() {
   // Don't forget to remove listeners at some point!
   // BackgroundGeolocation.removeAllListeners();
 }
+
+*/
 
 // document.addEventListener("deviceready", onDeviceReady, false);
 

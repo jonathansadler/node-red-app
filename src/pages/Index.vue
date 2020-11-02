@@ -53,7 +53,17 @@ eqeqeq */
           color="amber-4"
           icon="location_on"
         />
-        <br />Test Location
+        <br />Send Location
+      </div>
+      <div>
+        <q-btn
+          @click="trackLocation()"
+          size="xl"
+          round
+          color="green-9"
+          icon="location_on"
+        />
+        <br />Start Location Tracking
       </div>
       <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
@@ -65,6 +75,7 @@ eqeqeq */
 <script>
 import axios from "axios";
 import location from "../location";
+import trackLocation from "../track-location";
 
 var sendUrl = "";
 var nrAdmin = "";
@@ -93,6 +104,9 @@ export default {
     }
   }, // end mount
   methods: {
+    trackLocation() {
+      trackLocation.trackLocation();
+    },
     sendTestLocation() {
       this.allow_alert = "app";
       navigator.geolocation.getCurrentPosition(
