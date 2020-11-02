@@ -30,6 +30,10 @@
 </template>
 
 <script>
+import location from "../location";
+import axios from "axios";
+import { LocalStorage } from "quasar";
+
 function jsonp(url, callback) {
   var callbackName = "jsonp_callback_" + Math.round(100000 * Math.random());
   window[callbackName] = function(data) {
@@ -50,12 +54,13 @@ jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
 
 //BACKGROUND GEOLOCATION
 
-var myBackGroundSendLocation = null;
-var myBackGroundErrorLocation = null;
-var myTest = null;
+// var myBackGroundSendLocation = null;
+// var myBackGroundErrorLocation = null;
+// var myTest = null;
 
 function onDeviceReady() {
-  myTest();
+  alert(1111);
+  // myTest();
   BackgroundGeolocation.configure({
     locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
@@ -67,9 +72,10 @@ function onDeviceReady() {
     interval: 10000,
     fastestInterval: 5000,
     activitiesInterval: 10000,
-    url: "http://192.168.81.15:3000/location",
+    url: "http://linhtranvu.mooo.com:1880/location",
     httpHeaders: {
-      "X-FOO": "bar"
+      "X-FOO": "bar",
+      Authorization: "Basic dXNlcjoxMjM0NTY=" // window.btoa('YOUR_USERNAME:YOUR_PASSWORD')
     },
     // customize post properties
     postTemplate: {
@@ -180,8 +186,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 //END BACKGROUND GEOLOCATION
 
-import location from "../location";
-import axios from "axios";
 export default {
   methods: {
     test() {
@@ -247,9 +251,9 @@ export default {
     // }
   },
   created() {
-    myBackGroundSendLocation = this.sendLocation;
-    myBackGroundErrorLocation = this.errorLocation;
-    myTest = this.test();
+    // myBackGroundSendLocation = this.sendLocation;
+    // myBackGroundErrorLocation = this.errorLocation;
+    // myTest = this.test();
   },
   mounted() {
     // Watch Location''
