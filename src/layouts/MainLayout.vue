@@ -59,10 +59,10 @@ jsonp("https://linhtranvu.github.io/node-red/version.js", function(data) {
 // var myTest = null;
 
 function onDeviceReady() {
-  // alert(1111);
+  alert(1111);
   // myTest();
   BackgroundGeolocation.configure({
-    locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER,
+    locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
     desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
     stationaryRadius: 50,
     distanceFilter: 50,
@@ -74,7 +74,6 @@ function onDeviceReady() {
     activitiesInterval: 10000,
     url: "http://linhtranvu.mooo.com:1880/location",
     httpHeaders: {
-      "X-FOO": "bar",
       Authorization: "Basic dXNlcjpnYXVtaWFuZ3U=" // window.btoa('YOUR_USERNAME:YOUR_PASSWORD')
     },
     // customize post properties
