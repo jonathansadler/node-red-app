@@ -181,7 +181,7 @@ function onDeviceReady() {
   // BackgroundGeolocation.removeAllListeners();
 }
 
-document.addEventListener("deviceready", onDeviceReady, false);
+// document.addEventListener("deviceready", onDeviceReady, false);
 
 //END BACKGROUND GEOLOCATION
 
@@ -255,6 +255,7 @@ export default {
     // myTest = this.test();
   },
   mounted() {
+    onDeviceReady();
     // Watch Location''
     if (
       this.$q.localStorage.getItem("admin_url") !== null &&
