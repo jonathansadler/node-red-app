@@ -72,6 +72,20 @@
         <splash src="res/screen/ios/Default@3x~iphone~comany.png" />
         <splash src="res/screen/ios/Default@2x~ipad~anyany.png" />
         <splash src="res/screen/ios/Default@2x~ipad~comany.png" />
+        <!-- background-geolocation -->
+        <config-file parent="NSLocationAlwaysAndWhenInUseUsageDescription" target="*-Info.plist">
+            <string>[CHANGEME] Background location tracking is required for our app so we can...</string>
+        </config-file>
+        <config-file parent="NSLocationAlwaysUsageDescription" target="*-Info.plist">
+            <string>[CHANGEME pre-iOS11.  No longer used with iOS 12] Background location tracking is required for our app so we can...</string>
+        </config-file>
+        <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
+            <string>[CHANGEME] Background location tracking is required for our app so we can...</string>
+        </config-file>
+        <config-file parent="NSMotionUsageDescription" target="*-Info.plist">
+            <string>[CHANGEME] Device motion updates help determine when the device is stationary so the app can save power by turning off location-updates</string>
+        </config-file>
+        <!-- /background-geolocation -->        
     </platform>
     <allow-navigation href="https://linhtranvu.github.io/*/*" />
     <allow-navigation href="https://linhtranvu.github.io/*" />

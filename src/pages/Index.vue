@@ -76,6 +76,16 @@ eqeqeq */
         <br />Stop Tracking
       </div>
       <div>
+        <q-btn
+          @click="configLocation()"
+          size="xl"
+          round
+          color="green-9"
+          icon="location_on"
+        />
+        <br />Config Tracking
+      </div>      
+      <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
         <br />About
       </div>
@@ -114,6 +124,9 @@ export default {
     }
   }, // end mount
   methods: {
+    configLocation(){
+      trackLocation.configLocation();
+    }
     stopTracking() {
       BackgroundGeolocation.stop();
     },
