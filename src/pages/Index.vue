@@ -86,6 +86,16 @@ eqeqeq */
         <br />Config Tracking
       </div>
       <div>
+        <q-btn
+          @click="trackLocationIOS()"
+          size="xl"
+          round
+          color="green-9"
+          icon="location_on"
+        />
+        <br />Track IOS
+      </div>      
+      <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
         <br />About
       </div>
@@ -96,6 +106,7 @@ eqeqeq */
 import axios from "axios";
 import location from "../location";
 import trackLocation from "../track-location";
+import trackLocationIOS from "../track-location-ios";
 
 var sendUrl = "";
 var nrAdmin = "";
@@ -124,6 +135,9 @@ export default {
     }
   }, // end mount
   methods: {
+    trackLocationIOS() {
+      trackLocationIOS.trackLocation();
+    },
     configLocation() {
       trackLocation.configLocation();
     },

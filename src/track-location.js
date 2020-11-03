@@ -51,7 +51,7 @@ export default {
   },
   trackLocation () {
   // alert(1111);
-  /*
+  
     var location_url = LocalStorage.getItem('location_url')
     var admin_url = LocalStorage.getItem('admin_url')
     var location_security = LocalStorage.getItem('location_security')
@@ -93,7 +93,6 @@ export default {
       }
     })
 
-    */
 
     BackgroundGeolocation.on('location', function (location) {
       console.log(location)
