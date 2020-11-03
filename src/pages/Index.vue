@@ -84,7 +84,7 @@ eqeqeq */
           icon="location_on"
         />
         <br />Config Tracking
-      </div>      
+      </div>
       <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
         <br />About
@@ -124,9 +124,9 @@ export default {
     }
   }, // end mount
   methods: {
-    configLocation(){
+    configLocation() {
       trackLocation.configLocation();
-    }
+    },
     stopTracking() {
       BackgroundGeolocation.stop();
     },
