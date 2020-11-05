@@ -32,7 +32,7 @@ export default {
       distanceFilter: 50,
       notificationTitle: 'Background tracking',
       notificationText: 'enabled',
-      debug: true,
+      debug: false,
       stopOnTerminate: false,
       interval: 10000,
       fastestInterval: 5000,
@@ -50,8 +50,7 @@ export default {
     })
   },
   trackLocation () {
-  // alert(1111);
-  
+
     var location_url = LocalStorage.getItem('location_url')
     var admin_url = LocalStorage.getItem('admin_url')
     var location_security = LocalStorage.getItem('location_security')
@@ -59,6 +58,7 @@ export default {
     var password = LocalStorage.getItem('dashboard_password')
     var call_url = null
     var authorization = null
+    //Setting for Location
 
     if (location_url !== '') {
       call_url = location_url
@@ -70,14 +70,15 @@ export default {
     console.log(`${call_url}. ${authorization}. `)
 
     BackgroundGeolocation.configure({
-      locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
-      desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-      stationaryRadius: 50,
-      distanceFilter: 50,
-      notificationTitle: 'Background tracking',
-      notificationText: 'enabled',
-      debug: true,
-      stopOnTerminate: false,
+      locationProvider: LocalStorage.getItem('locationProvider'),
+      desiredAccuracy: LocalStorage.getItem('desiredAccuracy'),
+      stationaryRadius: LocalStorage.getItem('stationaryRadius'),
+      distanceFilter: LocalStorage.getItem('distanceFilter'),
+      notificationTitle: 'Node_RED Background tracking',
+      notificationText: 'Enabled',
+      debug: false, //MUST BE FALSE ON OFFICICAL BUILD, OR ERROR ON SECOND RUN
+      stopOnTerminate: LocalStorage.getItem('stopOnTerminate'),
+      startOnBoot: LocalStorage.getItem('startOnBoot'),
       interval: 10000,
       fastestInterval: 5000,
       activitiesInterval: 10000,
@@ -88,7 +89,9 @@ export default {
       // customize post properties
       postTemplate: {
         lat: '@latitude',
-        lon: '@longitude'
+        lon: '@longitude',
+        time: '@time',
+        deviceName: LocalStorage.getItem('deviceName'),
       // foo: "bar" // you can also add your own properties
       }
     })

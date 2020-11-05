@@ -3,10 +3,19 @@
     <q-form ref="loginForm" id="loginForm">
       <div class="q-pa-md">
         <div class="q-gutter-md">
-          <h5 class="text-weight-bold text-blue">
+          <div class="text-h6 text-blue">
             App Setting (saved on Phone)
-          </h5>
+          </div>
           <q-separator />
+          <q-input
+            ref="deviceName"
+            :rules="[val => !!val || 'Required']"
+            v-model="deviceName"
+            outlined
+            type="url"
+            label="Device Alias Name"
+          >
+          </q-input>
           <q-card class="my-card bg-amber-3">
             <!--
           <q-card-section>
@@ -88,84 +97,6 @@
             label="Admin password"
           >
           </q-input>
-          <q-separator />
-          <q-card class="my-card bg-light-blue-2 text-left">
-            <q-card-section>
-              Setting for Location Tracking. App has button to quickly create
-              endpoint http-in node to get location.<br />
-              <span v-if="location_url">
-                App will uses
-                <a href="#ff"
-                  >{{ location_url }}/location?lat=lat_data&lon=lon_data'</a
-                >
-                as default to send location data. Make sure this url works
-                (contain http or https)
-              </span>
-              <span v-else
-                >No Location URL specified, app uses
-                <a href="#ff"
-                  >{{ admin_url }}/location?lat=lat_data&lon=lon_data'</a
-                >
-                as default to send location data.
-              </span>
-              <ul>
-                <li>
-                  Location URL security: BasicAuth mean App will use username
-                  and password from Dashboard setting to authenticate location
-                  url
-                </li>
-                <li>Timeout: Maximum time (in milliseconds) request call</li>
-                <li>
-                  Max age: Maximum age in milliseconds of a possible cached
-                  position that is acceptable to return
-                </li>
-              </ul>
-            </q-card-section>
-          </q-card>
-          <div class="row">
-            <q-toggle
-              ref="tracking_status"
-              v-model="tracking_status"
-              label="Location tracking"
-              left-label
-            />
-          </div>
-          <q-input
-            ref="location_url"
-            v-model="location_url"
-            outlined
-            type="text"
-            label="Location URL"
-          >
-          </q-input>
-          <q-select
-            ref="location_security"
-            outlined
-            v-model="location_security"
-            :options="location_sec_options"
-            label="Location URL security"
-            :rules="[val => !!val || 'Required']"
-          />
-
-          <q-input
-            ref="location_timeout"
-            v-model="location_timeout"
-            outlined
-            type="text"
-            label="Timeout (ms)"
-            :rules="[val => !!val || 'Required (number)']"
-          >
-          </q-input>
-          <q-input
-            ref="location_maxage"
-            v-model="location_maxage"
-            outlined
-            type="text"
-            label="Maximum Age"
-            :rules="[val => !!val || 'Required (number)']"
-          >
-          </q-input>
-
           <q-separator />
           <q-card class="my-card bg-light-green-3">
             <q-card-section>
@@ -260,22 +191,6 @@ export default {
       this.$q.localStorage.getItem("admin_password") === null
         ? process.env.admin_password // Admin Password Username URL
         : this.$q.localStorage.getItem("admin_password");
-    this.tracking_status =
-      this.$q.localStorage.getItem("tracking_status") === null
-        ? process.env.tracking_status
-        : this.$q.localStorage.getItem("tracking_status");
-    this.location_timeout =
-      this.$q.localStorage.getItem("location_timeout") === null
-        ? "30000"
-        : this.$q.localStorage.getItem("location_timeout");
-    this.location_maxage =
-      this.$q.localStorage.getItem("location_maxage") === null
-        ? "30000"
-        : this.$q.localStorage.getItem("location_maxage");
-    this.location_security =
-      this.$q.localStorage.getItem("location_security") === null
-        ? "BasicAuth"
-        : this.$q.localStorage.getItem("location_security");
   },
   methods: {
     save() {
@@ -287,6 +202,7 @@ export default {
       this.$refs.loginForm.validate().then(success => {
         if (success) {
           this.loading = false;
+          this.$q.localStorage.set("deviceName", this.deviceName);
           this.$q.localStorage.set("dashboard_url", this.dashboard_url);
           this.$q.localStorage.set("dashboard_user", this.dashboard_user);
           this.$q.localStorage.set(
@@ -299,11 +215,6 @@ export default {
           this.$q.localStorage.set("js_admin", this.js_admin);
           this.$q.localStorage.set("js_dashboard", this.js_dashboard);
           this.$q.localStorage.set("js_editor", this.js_editor);
-          this.$q.localStorage.set("tracking_status", this.tracking_status);
-          this.$q.localStorage.set("location_url", this.location_url);
-          this.$q.localStorage.set("location_timeout", this.location_timeout);
-          this.$q.localStorage.set("location_maxage", this.location_maxage);
-          this.$q.localStorage.set("location_security", this.location_security);
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({
             color: "positive",
@@ -323,6 +234,10 @@ export default {
   }, // end method
   data() {
     return {
+      deviceName:
+        this.$q.localStorage.getItem("deviceName") === null
+          ? "My Device"
+          : this.$q.localStorage.getItem("deviceName"),
       admin_url: "",
       dashboard_url: "",
       admin_user: "",

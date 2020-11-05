@@ -9,6 +9,8 @@ export default {
   myAdmin: null,
   myAlert: null,
   sendLocation (formData) {
+
+
     var location_url = LocalStorage.getItem('location_url')
     var admin_url = LocalStorage.getItem('admin_url')
     var location_security = LocalStorage.getItem('location_security')

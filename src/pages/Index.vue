@@ -47,57 +47,17 @@ eqeqeq */
       </div>
       <div>
         <q-btn
-          @click="sendTestLocation()"
+          to="/location"
           size="xl"
           round
           color="amber-4"
           icon="location_on"
         />
-        <br />Send Location
+        <br />Location Setting
       </div>
-      <div>
-        <q-btn
-          @click="trackLocation()"
-          size="xl"
-          round
-          color="green-9"
-          icon="location_on"
-        />
-        <br />Start Location Tracking
-      </div>
-      <div>
-        <q-btn
-          @click="stopTracking()"
-          size="xl"
-          round
-          color="green-9"
-          icon="location_on"
-        />
-        <br />Stop Tracking
-      </div>
-      <div>
-        <q-btn
-          @click="configLocation()"
-          size="xl"
-          round
-          color="green-9"
-          icon="location_on"
-        />
-        <br />Config Tracking
-      </div>
-      <div>
-        <q-btn
-          @click="trackLocationIOS()"
-          size="xl"
-          round
-          color="green-9"
-          icon="location_on"
-        />
-        <br />Track IOS
-      </div>      
       <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
-        <br />About
+        <br />Help
       </div>
     </div>
   </div>
@@ -106,7 +66,7 @@ eqeqeq */
 import axios from "axios";
 import location from "../location";
 import trackLocation from "../track-location";
-import trackLocationIOS from "../track-location-ios";
+//import trackLocationIOS from "../track-location-ios";
 
 var sendUrl = "";
 var nrAdmin = "";
@@ -135,25 +95,6 @@ export default {
     }
   }, // end mount
   methods: {
-    trackLocationIOS() {
-      trackLocationIOS.trackLocation();
-    },
-    configLocation() {
-      trackLocation.configLocation();
-    },
-    stopTracking() {
-      BackgroundGeolocation.stop();
-    },
-    trackLocation() {
-      trackLocation.trackLocation();
-    },
-    sendTestLocation() {
-      this.allow_alert = "app";
-      navigator.geolocation.getCurrentPosition(
-        this.sendLocation,
-        this.errorLocation
-      );
-    },
     loadAdmin: function() {
       nrAdmin = cordova.InAppBrowser.open(
         this.$q.localStorage.getItem("admin_url"),
@@ -204,28 +145,6 @@ export default {
           navigator.geolocation.getCurrentPosition(sendLocation, errorLocation);
         }
       });
-    },
-
-    sendLocation: function(position) {
-      console.log(position);
-      var formData = [];
-      formData.lat = position.coords.latitude;
-      formData.lon = position.coords.longitude;
-      formData.allow_alert = this.allow_alert;
-      // formData.nrAdmin = this.myAdmin
-      location.sendLocation(formData);
-    },
-    errorLocation: function(error) {
-      if (this.allow_alert == "app") {
-        alert(
-          `Can not get location: ${error.code}. Error message: ${error.message}`
-        );
-      }
-      if (this.allow_alert == "red") {
-        this.myAdmin.executeScript({
-          code: `alert('Error code: ${error.code}. Error message: ${error.message}')`
-        });
-      }
     },
 
     loadDashBoard: function() {

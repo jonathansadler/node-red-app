@@ -15,10 +15,8 @@
   "devDependencies": {
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "cordova-android": "^9.0.0",
-    "cordova-background-geolocation-lt": "^3.9.2",
-    "cordova-ios": "^6.1.1",
+    "cordova-ios": "^5.0.0",
     "cordova-plugin-app-version": "^0.1.9",
-    "cordova-plugin-background-fetch": "^6.1.1",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-inappbrowser": "^4.0.0",
     "cordova-plugin-splashscreen": "^6.0.0",
