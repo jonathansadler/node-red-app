@@ -15,7 +15,7 @@
   "devDependencies": {
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "cordova-android": "^9.0.0",
-    "cordova-ios": "^5.0.0",
+    "cordova-ios": "^6.1.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-inappbrowser": "^4.0.0",
@@ -45,7 +45,8 @@
       "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
