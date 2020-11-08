@@ -7,7 +7,7 @@
           <q-avatar>
             <img src="~assets/node-red-hexagon.png" />
           </q-avatar>
-          <q-btn flat to="/">Node-RED App</q-btn>
+          <q-btn flat to="/">Node-RED Client Editor</q-btn>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

@@ -1,6 +1,6 @@
 {
   "name": "node-red-app",
-  "version": "0.0.5",
+  "version": "0.5.0",
   "description": "A mobile client app for node-RED",
   "productName": "Node-RED app",
   "author": "Tran Vu Linh",
