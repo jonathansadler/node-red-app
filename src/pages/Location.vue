@@ -21,7 +21,8 @@
                 <q-card-actions align="left">
                   <q-chip
                     v-if="
-                      this.$q.localStorage.getItem('tracking_status') === null
+                      this.$q.localStorage.getItem('tracking_status') ===
+                        null && this.saveSetting == false
                     "
                     square
                     color="orange"
@@ -233,12 +234,10 @@ export default {
     //Check run status
 
     BackgroundGeolocation.checkStatus(function(status) {
-      if (!status.isRunning) {
-        BackgroundGeolocation.start(); // triggers start on start event
+      if (status.isRunning) {
         comp.trackingStatus = "Running...";
         comp.trackingColor = "green";
       } else {
-        BackgroundGeolocation.stop(); // triggers start on start event
         comp.trackingStatus = "Stopped";
         comp.trackingColor = "red";
       }
@@ -275,7 +274,7 @@ export default {
     save() {
       // Quasar allows us to add loading spinners to our buttons
       // so we bind the loading property to the attribute on q-btn.
-      this.loading = true;
+      this.saveSetting = true;
       // The login method returns a promise.
 
       this.$refs.loginForm.validate().then(success => {
@@ -302,7 +301,7 @@ export default {
             message: "Save successful!"
           });
           // ...and redirect them to the index.
-          // this.$router.push("/");
+          this.$router.push("/location");
         } else {
           // oh no, user has filled in
           this.$q.notify({
@@ -315,6 +314,7 @@ export default {
   }, // end method
   data() {
     return {
+      saveSetting: false,
       tab: "setting",
       trackingColor: "",
       trackingStatus: "",
