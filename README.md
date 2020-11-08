@@ -4,19 +4,11 @@ A mobile app client for Node-RED
 
 ## User manual
 
-Please visit 
-
-[manual]: https://linhtranvu.github.io/node-red/
-
-
+Please visit [User Manual](https://linhtranvu.github.io/node-red/)
 
 ## Developement
 
-App is written in Quasar Framework (Vue.js and Cordova). Please visit 
-
-[Quasar]: https://quasar.dev
-
- for more information about development
+App is written in Quasar Framework (Vue.js and Cordova). Please visit [Quasar Homepage](https://quasar.dev /)  for more information about development
 
 ### Install the dependencies
 
