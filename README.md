@@ -1,30 +1,33 @@
-# Node-RED app (node-red-app)
+# Node-RED Client Editor
 
-A mobile app for node-RED
+A mobile app client for Node-RED
 
-## Change user authentication to middleware for Dashboard
+## User manual
 
-In `.node-red/settings.js`, comment out `httpNodeAuth` to remove basic authentication
+Please visit 
 
-Uncomment `ui`, change  to:
+[manual]: https://linhtranvu.github.io/node-red/
 
-    ui: { 
-    	path: "ui",
-    	middleware: require("./dashboard-auth.js")
-    },
-Download [dashboard-auth.js](https://linhtranvu.github.io/node-red/dashboard-auth.js) , put in your `.node-red` folder (so `settings.js` and `dashboard-auth.js` in the same folder). Open file, change username and password to what you want
 
-Credit to [librae8226](https://github.com/node-red/node-red-dashboard/pull/209 ) 
 
-## Install the dependencies
+## Developement
+
+App is written in Quasar Framework (Vue.js and Cordova). Please visit 
+
+[Quasar]: https://quasar.dev
+
+ for more information about development
+
+### Install the dependencies
 
 ```bash
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Start the app in development mode (hot-code reloading, error reporting, etc. directly on mobile)
 ```bash
-quasar dev
+quasar dev -m android
+quasar dev -m ios
 ```
 
 ### Lint the files
@@ -33,8 +36,12 @@ npm run lint
 ```
 
 ### Build the app for production
+
+Run below command, open Android Studio or XCode and build yourself. Rememeber to change package name 
+
 ```bash
-quasar build
+quasar build -m android --ide
+quasar build -m ios --ide
 ```
 
 ### Customize the configuration

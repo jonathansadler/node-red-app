@@ -55,7 +55,7 @@
       </q-card>
       <iframe
         style="border:none;"
-        src="https://linhtranvu.github.io/node-red/about.htm"
+        src="https://linhtranvu.github.io/node-red/index.htm"
         width="100%"
         height="1500px"
       ></iframe>
