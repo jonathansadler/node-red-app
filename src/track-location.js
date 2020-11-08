@@ -7,48 +7,6 @@ import {
 
 export default {
 
-  configLocation() {
-    var location_url = LocalStorage.getItem('location_url')
-    var admin_url = LocalStorage.getItem('admin_url')
-    var location_security = LocalStorage.getItem('location_security')
-    var username = LocalStorage.getItem('dashboard_user')
-    var password = LocalStorage.getItem('dashboard_password')
-    var call_url = null
-    var authorization = null
-
-    if (location_url !== '') {
-      call_url = location_url
-    } else {
-      call_url = admin_url + '/location'
-    }
-    var authorization = 'Basic ' + window.btoa(username + ':' + password)
-
-    console.log(`${call_url}. ${authorization}. `)
-
-    BackgroundGeolocation.configure({
-      locationProvider: BackgroundGeolocation.DISTANCE_FILTER_PROVIDER,
-      desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-      stationaryRadius: 50,
-      distanceFilter: 50,
-      notificationTitle: 'Background tracking',
-      notificationText: 'enabled',
-      debug: false,
-      stopOnTerminate: false,
-      interval: 10000,
-      fastestInterval: 5000,
-      activitiesInterval: 10000,
-      url: call_url,
-      httpHeaders: {
-        Authorization: authorization // window.btoa('YOUR_USERNAME:YOUR_PASSWORD')
-      },
-      // customize post properties
-      postTemplate: {
-        lat: '@latitude',
-        lon: '@longitude'
-      // foo: "bar" // you can also add your own properties
-      }
-    })
-  },
   trackLocation () {
 
     var location_url = LocalStorage.getItem('location_url')
@@ -91,7 +49,9 @@ export default {
         lat: '@latitude',
         lon: '@longitude',
         time: '@time',
-        deviceName: LocalStorage.getItem('deviceName'),
+        name: LocalStorage.getItem('deviceName'),
+        icon: LocalStorage.getItem('locationIcon'),
+        iconColor: LocalStorage.getItem('locationIconColor'),
       // foo: "bar" // you can also add your own properties
       }
     })

@@ -10,33 +10,50 @@
           class="bg-orange text-white shadow-2"
         >
           <q-tab name="setting" label="Setting"> </q-tab>
-          <q-tab name="log" label="Log" />
+          <q-tab name="test" label="Test"> </q-tab>
+          <!-- <q-tab name="log" label="Log" /> -->
           <q-tab name="help" label="Help" />
         </q-tabs>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="setting">
             <q-form ref="loginForm" id="loginForm">
               <q-card class="my-card">
-                <q-card-actions align="right">
+                <q-card-actions align="left">
+                  <q-chip
+                    v-if="
+                      this.$q.localStorage.getItem('tracking_status') === null
+                    "
+                    square
+                    color="orange"
+                    text-color="white"
+                    icon-right="star"
+                  >
+                    Save setting to Start Tracking
+                  </q-chip>
+
                   <q-btn
+                    v-else
                     color="blue"
                     icon="reply"
-                    @click="sendTestLocation()"
-                    label="Send Location"
+                    @click="startTracking()"
+                    label="ON/OFF Tracking"
                   />
-                  <q-toggle
-                    label="Tracking Status"
-                    color="green"
-                    v-model="trackingStatus"
-                    readonly
-                  />
+
+                  <q-chip
+                    :color="trackingColor"
+                    text-color="white"
+                    icon="bookmark"
+                  >
+                    Tracking Status: {{ trackingStatus }}
+                  </q-chip>
                 </q-card-actions>
               </q-card>
               <q-card class="my-card bg-amber-3">
                 <q-card-section>
                   App will run in Background Mode, POST location data to URL
                   with basicAuth (user, password from Dashboard Setting). If no
-                  URL specify, Admin URL will be used
+                  URL specify, Admin URL will be used. App Admin has feature to
+                  quickly create node and display on map
                   <br />
                   Location URL:
                   <span v-if="location_url">
@@ -62,10 +79,11 @@
                   </ul>
                 </q-card-section>
               </q-card>
+              <br />
               <q-toggle
                 ref="tracking_status"
                 v-model="tracking_status"
-                label="Location tracking"
+                label="Tracking when app start (ON will automatically start tracking when App starts)"
                 left-label
               />
               <q-input
@@ -131,6 +149,33 @@
                 left-label
               />
               <q-separator />
+              <q-card class="my-card bg-amber-3">
+                <q-card-section>
+                  Setting for
+                  <a
+                    href="https://flows.nodered.org/node/node-red-contrib-web-worldmap"
+                    >node-red-contrib-web-worldmap</a
+                  >, a node to display map and location.
+                </q-card-section>
+              </q-card>
+              <q-input
+                ref="locationIcon"
+                v-model="locationIcon"
+                outlined
+                type="text"
+                label="Icon on map (Font awesome or Image URL)"
+                :rules="[val => !!val || 'Required']"
+              >
+              </q-input>
+              <q-input
+                ref="locationIconColor"
+                v-model="locationIconColor"
+                outlined
+                type="text"
+                label="Icon color. Text color (green) or #rrggbb"
+                :rules="[val => !!val || 'Required']"
+              >
+              </q-input>
               <div
                 class="q-pa-md q-gutter-sm items-center content-center justify-center text-left"
               >
@@ -139,7 +184,9 @@
               </div>
             </q-form>
           </q-tab-panel>
-
+          <q-tab-panel name="test">
+            <LocationTest></LocationTest>
+          </q-tab-panel>
           <q-tab-panel name="log">
             Log data of Location tracking for Debugging
           </q-tab-panel>
@@ -161,9 +208,12 @@
 <script>
 import axios from "axios";
 import location from "../location";
+import Vue from "vue";
+Vue.component("LocationTest", () => import("./LocationTest.vue"));
 
 export default {
   mounted() {
+    var comp = this;
     this.tracking_status =
       this.$q.localStorage.getItem("tracking_status") === null
         ? process.env.tracking_status
@@ -183,37 +233,44 @@ export default {
     //Check run status
 
     BackgroundGeolocation.checkStatus(function(status) {
-      trackingStatus = status.isRunning;
+      if (!status.isRunning) {
+        BackgroundGeolocation.start(); // triggers start on start event
+        comp.trackingStatus = "Running...";
+        comp.trackingColor = "green";
+      } else {
+        BackgroundGeolocation.stop(); // triggers start on start event
+        comp.trackingStatus = "Stopped";
+        comp.trackingColor = "red";
+      }
     });
   },
   methods: {
-    sendTestLocation() {
-      this.allow_alert = "app";
-      navigator.geolocation.getCurrentPosition(
-        this.sendLocation,
-        this.errorLocation
-      );
-    },
-    sendLocation: function(position) {
-      console.log(position);
-      var formData = [];
-      formData.lat = position.coords.latitude;
-      formData.lon = position.coords.longitude;
-      formData.allow_alert = "app";
-      // formData.nrAdmin = this.myAdmin
-      location.sendLocation(formData);
-    },
-    errorLocation: function(error) {
-      if (this.allow_alert == "app") {
-        alert(
-          `Can not get location: ${error.code}. Error message: ${error.message}`
+    startTracking() {
+      var comp = this;
+      BackgroundGeolocation.checkStatus(function(status) {
+        console.log(
+          "[INFO] BackgroundGeolocation service is running",
+          status.isRunning
         );
-      }
-      if (this.allow_alert == "red") {
-        this.myAdmin.executeScript({
-          code: `alert('Error code: ${error.code}. Error message: ${error.message}')`
-        });
-      }
+        console.log(
+          "[INFO] BackgroundGeolocation services enabled",
+          status.locationServicesEnabled
+        );
+        console.log(
+          "[INFO] BackgroundGeolocation auth status: " + status.authorization
+        );
+
+        // you don't need to check status before start (this is just the example)
+        if (!status.isRunning) {
+          BackgroundGeolocation.start(); // triggers start on start event
+          comp.trackingStatus = "Running...";
+          comp.trackingColor = "green";
+        } else {
+          BackgroundGeolocation.stop(); // triggers start on start event
+          comp.trackingStatus = "Stopped";
+          comp.trackingColor = "red";
+        }
+      });
     },
     save() {
       // Quasar allows us to add loading spinners to our buttons
@@ -237,6 +294,8 @@ export default {
           this.$q.localStorage.set("desiredAccuracy", this.desiredAccuracy);
           this.$q.localStorage.set("stopOnTerminate", this.stopOnTerminate);
           this.$q.localStorage.set("startOnBoot", this.startOnBoot);
+          this.$q.localStorage.set("locationIcon", this.locationIcon);
+          this.$q.localStorage.set("locationIconColor", this.locationIconColor);
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({
             color: "positive",
@@ -257,7 +316,8 @@ export default {
   data() {
     return {
       tab: "setting",
-      trackingStatus: false,
+      trackingColor: "",
+      trackingStatus: "",
       tracking_status:
         this.$q.localStorage.getItem("tracking_status") === null
           ? "true"
@@ -298,7 +358,15 @@ export default {
         this.$q.localStorage.getItem("startOnBoot") === null
           ? false
           : this.$q.localStorage.getItem("startOnBoot"),
-      admin_url: this.$q.localStorage.getItem("admin_url")
+      admin_url: this.$q.localStorage.getItem("admin_url"),
+      locationIcon:
+        this.$q.localStorage.getItem("locationIcon") === null
+          ? "fa-user-circle"
+          : this.$q.localStorage.getItem("locationIcon"),
+      locationIconColor:
+        this.$q.localStorage.getItem("locationIconColor") === null
+          ? "red"
+          : this.$q.localStorage.getItem("locationIconColor")
     };
   }
 };

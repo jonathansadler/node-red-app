@@ -2,6 +2,18 @@
 eqeqeq */
 <template>
   <div class="q-pa-md">
+    <q-card
+      class="my-card bg-amber-3"
+      v-if="this.$q.localStorage.getItem('tracking_status') === null"
+    >
+      <q-card-section>
+        Location tracking wont start until
+        <q-btn size="sm" color="green" href="#" to="/location"
+          ><q-icon left name="my_location" />Location setting saved</q-btn
+        >
+      </q-card-section>
+    </q-card>
+    <br />
     <div
       class="row q-gutter-xl  text-bold items-center content-center justify-center text-center  text-grey-9 "
     >
@@ -66,10 +78,6 @@ eqeqeq */
 import axios from "axios";
 import location from "../location";
 import trackLocation from "../track-location";
-//import trackLocationIOS from "../track-location-ios";
-
-var sendUrl = "";
-var nrAdmin = "";
 
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {}
@@ -77,9 +85,10 @@ function onDeviceReady() {}
 export default {
   data() {
     return {
+      myDash: "",
       allow_alert: true,
       location,
-      myAdmin: null
+      myAdmin: ""
     };
   },
   mounted() {
@@ -96,7 +105,7 @@ export default {
   }, // end mount
   methods: {
     loadAdmin: function() {
-      nrAdmin = cordova.InAppBrowser.open(
+      var nrAdmin = cordova.InAppBrowser.open(
         this.$q.localStorage.getItem("admin_url"),
         "_blank",
         "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,clearcache=yes"
@@ -137,7 +146,7 @@ export default {
       var errorLocation = this.errorLocation;
       nrAdmin.addEventListener("message", function(data) {
         if (data.data.home == "home") {
-          nrAdmin.close();
+          nrAdmin.hide();
         }
         if (data.data.location == "location") {
           console.log("home");
@@ -151,18 +160,18 @@ export default {
       var url = this.$q.localStorage.getItem("dashboard_url");
       var username = this.$q.localStorage.getItem("dashboard_user");
       var password = this.$q.localStorage.getItem("dashboard_password");
-      var nrdashUrl =
-        this.$q.localStorage.getItem("dashboard_url") +
-        "/?username=" +
-        this.$q.localStorage.getItem("dashboard_user") +
-        "&token=" +
-        this.$q.localStorage.getItem("dashboard_password");
+      // var nrdashUrl =
+      //   this.$q.localStorage.getItem("dashboard_url") +
+      //   "/?username=" +
+      //   this.$q.localStorage.getItem("dashboard_user") +
+      //   "&token=" +
+      //   this.$q.localStorage.getItem("dashboard_password");
       var nrdash = cordova.InAppBrowser.open(
         url,
         "_blank",
         "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no"
       );
-      this.mydash = nrdash;
+      this.myDash = nrdash;
       var localStorage = this.$q.localStorage;
       nrdash.addEventListener("loadstop", function() {
         nrdash.executeScript(
@@ -186,13 +195,19 @@ export default {
     },
 
     showDashBoard: function() {
-      var nrdash = this.$q.localStorage.getItem("nrdash");
-      // console.log(nrdash);
-      if (nrdash !== "undefined") {
-        // if (typeof this.mydash !== 'undefined') {
-        this.mydash.show();
+      if (this.myDash !== "") {
+        this.myDash.show();
       } else {
         this.loadDashBoard();
+      }
+    },
+
+    showAdmin: function() {
+      console.log(this.myAdmin);
+      if (this.myAdmin !== "") {
+        this.myAdmin.show();
+      } else {
+        this.loadAdmin();
       }
     }
   }, // end method
