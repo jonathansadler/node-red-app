@@ -6,7 +6,7 @@
 
 Now could be downloaded from App store and Google Play
 
-[![play icon](https://linhtranvu.github.io/node-red/images/play icon.jpg)](https://play.google.com/store/apps/details?id=org.nodered.linhtranvu.app)
+[![play icon](https://aws1.discourse-cdn.com/business6/uploads/nodered/original/3X/4/a/4a0714e97d7e8f65ae28142d57cb90196a9d3b22.jpeg)](https://play.google.com/store/apps/details?id=org.nodered.linhtranvu.app)
 
 [![app store icon](https://aws1.discourse-cdn.com/business6/uploads/nodered/original/3X/8/8/885839638289f9d382d213b253161593302a2f75.jpeg)](https://apps.apple.com/us/app/node-red-client-editor/id1539323696)
 
