@@ -68,6 +68,16 @@ eqeqeq */
         <br />Location Setting
       </div>
       <div>
+        <q-btn
+          to="/push"
+          size="xl"
+          round
+          color="blue-12"
+          icon="announcement"
+        />
+        <br />Push Setting
+      </div>
+      <div>
         <q-btn to="/help" size="xl" round color="purple" icon="help" />
         <br />Help
       </div>

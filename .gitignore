@@ -32,3 +32,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 /*.lnk
+/src-cordova/google-services.json
+/src-cordova/GoogleService-Info.plist

@@ -10,7 +10,8 @@ const routes = [
       { path: '/camera', component: () => import('pages/Camera.vue') },
       { path: '/help', component: () => import('pages/Help.vue') },
       { path: '/device', component: () => import('pages/Device.vue') },
-      { path: '/location', component: () => import('pages/Location.vue') }
+      { path: '/location', component: () => import('pages/Location.vue') },
+      { path: '/push', component: () => import('pages/Push.vue') }
       
     ]
   },

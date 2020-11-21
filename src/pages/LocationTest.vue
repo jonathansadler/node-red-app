@@ -18,7 +18,8 @@
               Import Flows to create nodes for receiving and display data on
               Map. More info on Help tab<br />
               If you modified anything below (except lat,lon), should update
-              back to app setting and location setting
+              back to app setting (device name) and location setting (icon
+              setting)
             </q-card-section>
           </q-card>
           <q-input
@@ -104,6 +105,8 @@
 
 <script>
 import axios from "axios";
+import trackLocation from "../track-location";
+
 
 export default {
   mounted() {
@@ -152,7 +155,10 @@ export default {
                   lon: comp.lon,
                   icon: comp.icon,
                   iconColor: comp.iconColor,
-                  name: comp.deviceName
+                  name: comp.deviceName,
+                  time: trackLocation.convertTimeStamp(),
+                  timeStamp: comp.time,
+                  lineColor: comp.iconColor
                 }
               ],
               {

@@ -62,6 +62,12 @@
             label="Dashboard password"
           >
           </q-input>
+          <q-toggle
+            ref="auto_start_dashboard"
+            v-model="auto_start_dashboard"
+            label="Dashboard starts when open app"
+            left-label
+          />
           <q-separator />
           <q-card class="my-card bg-light-blue-2 ">
             <q-card-section>
@@ -215,6 +221,10 @@ export default {
           this.$q.localStorage.set("js_admin", this.js_admin);
           this.$q.localStorage.set("js_dashboard", this.js_dashboard);
           this.$q.localStorage.set("js_editor", this.js_editor);
+          this.$q.localStorage.set(
+            "auto_start_dashboard",
+            this.auto_start_dashboard
+          );
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({
             color: "positive",
@@ -234,6 +244,10 @@ export default {
   }, // end method
   data() {
     return {
+      auto_start_dashboard:
+        this.$q.localStorage.getItem("auto_start_dashboard") === null
+          ? false
+          : this.$q.localStorage.getItem("auto_start_dashboard"),
       deviceName:
         this.$q.localStorage.getItem("deviceName") === null
           ? "My Device"

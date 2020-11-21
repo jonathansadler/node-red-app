@@ -2,9 +2,11 @@
 
 > Node-RED is great and I use for my smart home. However, the lacking  of mobile app is a big disadvantage, and most of people like to use Home Assisstant for its mobile support
 >
-> I decide to develope a mobile app for Node RED, support automatically login Dashboard and Admin, custom buttons on Admin, native features like background location tracking (finished), voice  command, mqtt client, wysiwyg editor (in dev)...
+> I decide to develop a mobile app for Node RED, support automatically login Dashboard and Admin, custom buttons on Admin, native features like background location tracking (finished), voice  command, mqtt client, wysiwyg editor (in dev)...
 
-Now could be downloaded from App store and Google Play
+[Discussion thread on Node-RED forum](https://discourse.nodered.org/t/0-5-release-on-play-app-store-a-mobile-client-for-node-red-dashboard-and-admin-update-09nov/34063)
+
+Official released could be downloaded from App store and Google Play
 
 [![play icon](https://aws1.discourse-cdn.com/business6/uploads/nodered/original/3X/4/a/4a0714e97d7e8f65ae28142d57cb90196a9d3b22.jpeg)](https://play.google.com/store/apps/details?id=org.nodered.linhtranvu.app)
 
