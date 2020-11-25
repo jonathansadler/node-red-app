@@ -25,6 +25,13 @@
             label="Device Token"
           >
           </q-input>
+          <q-input
+            v-model="apnToken"
+            outlined
+            type="textarea"
+            label="APN Token"
+          >
+          </q-input>
           <!-- <div
             class="q-pa-md q-gutter-sm items-center content-center justify-center text-left"
           >
@@ -44,32 +51,46 @@
 </template>
 
 <script>
-import axios from "axios";
-import Vue from "vue";
+import axios from 'axios'
+import Vue from 'vue'
 
 export default {
-  mounted() {
-    var comp = this;
-    this.getToken();
+  mounted () {
+    var comp = this
+    this.getToken()
+    this.getApnToken()
   },
   methods: {
-    getToken() {
-      var comp = this;
+    getToken () {
+      var comp = this
       FirebasePlugin.getToken(
-        function(fcmToken) {
-          comp.fcmToken = fcmToken;
+        function (fcmToken) {
+          comp.fcmToken = fcmToken
         },
-        function(error) {
-          console.error(error);
+        function (error) {
+          console.error(error)
         }
-      );
+      )
+    },
+    getApnToken () {
+      var comp = this
+
+      if (cordova.platformId === 'ios') {
+        FirebasePlugin.onApnsTokenReceived(function (token) {
+          comp.apnToken = token
+        }, function (error) {
+          comp.apnToken = 'Error:' + error
+        })
+      }
     }
+
   }, // end method
-  data() {
+  data () {
     return {
-      fcmToken: "",
+      fcmToken: '',
+      apnToken: '',
       isHidden: false
-    };
+    }
   }
-};
+}
 </script>
