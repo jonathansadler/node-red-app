@@ -14,6 +14,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
+        <preference name="AndroidXEnabled" value="true" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="res/android/ldpi.png" />
         <icon density="mdpi" src="res/android/mdpi.png" />
@@ -88,14 +89,13 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>Need location access to send data to user's Node-RED server</string>
-    </edit-config>
-    <preference default="17.0.0" name="ANDROID_FIREBASE_ANALYTICS_VERSION" />
-    <preference name="AndroidXEnabled" value="true" />
+    </edit-config>   
     <plugin name="cordova-plugin-firebasex" spec="https://github.com/dpa99c/cordova-plugin-firebase" >
         <variable name="IOS_STRIP_DEBUG" value="true" />
         <variable name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="false" />
         <variable name="FIREBASE_PERFORMANCE_COLLECTION_ENABLED" value="false" />
         <variable name="FIREBASE_CRASHLYTICS_COLLECTION_ENABLED" value="false" />
         <variable name="SETUP_RECAPTCHA_VERIFICATION" value="true" />
-    </plugin>    
+        <variable name="ANDROID_FIREBASE_ANALYTICS_VERSION" value="17.0.0" />
+    </plugin>
 </widget>
