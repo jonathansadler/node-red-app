@@ -34,3 +34,5 @@ yarn-error.log*
 /*.lnk
 /src-cordova/google-services.json
 /src-cordova/GoogleService-Info.plist
+/graphic_source/GoogleService-Info.plist
+/graphic_source/google-services.json

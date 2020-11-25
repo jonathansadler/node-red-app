@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.nodered.linhtranvu.app" version="0.5.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.nodered.linhtranvu.app" version="0.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>RED Client Editor</name>
     <description>A mobile client app for node-RED</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
@@ -74,6 +74,14 @@
         <splash src="res/screen/ios/Default@2x~ipad~comany.png" />
         <preference name="ScrollEnabled" value="true" />
     </platform>
+    <plugin name="cordova-plugin-background-geolocation" spec="@mauron85/cordova-plugin-background-geolocation@~3.1.0">
+        <variable name="GOOGLE_PLAY_SERVICES_VERSION" value="17+" />
+        <variable name="ANDROID_SUPPORT_LIBRARY_VERSION" value="26+" />
+        <variable name="ICON" value="@mipmap/icon" />
+        <variable name="SMALL_ICON" value="@mipmap/icon" />
+        <variable name="ALWAYS_USAGE_DESCRIPTION" value="App requires background tracking " />
+        <variable name="MOTION_USAGE_DESCRIPTION" value="App requires motion detection" />
+    </plugin>
     <allow-navigation href="https://linhtranvu.github.io/*/*" />
     <allow-navigation href="https://linhtranvu.github.io/*" />
     <allow-navigation href="about:*" />
@@ -83,12 +91,11 @@
     </edit-config>
     <preference default="17.0.0" name="ANDROID_FIREBASE_ANALYTICS_VERSION" />
     <preference name="AndroidXEnabled" value="true" />
-    <plugin name="cordova-plugin-background-geolocation" spec="@mauron85/cordova-plugin-background-geolocation@~3.1.0">
-        <variable name="GOOGLE_PLAY_SERVICES_VERSION" value="17+" />
-        <variable name="ANDROID_SUPPORT_LIBRARY_VERSION" value="26+" />
-        <variable name="ICON" value="@mipmap/icon" />
-        <variable name="SMALL_ICON" value="@mipmap/icon" />
-        <variable name="ALWAYS_USAGE_DESCRIPTION" value="App requires background tracking " />
-        <variable name="MOTION_USAGE_DESCRIPTION" value="App requires motion detection" />
-    </plugin>
+    <plugin name="cordova-plugin-firebasex" spec="https://github.com/dpa99c/cordova-plugin-firebase" >
+        <variable name="IOS_STRIP_DEBUG" value="true" />
+        <variable name="FIREBASE_ANALYTICS_COLLECTION_ENABLED" value="false" />
+        <variable name="FIREBASE_PERFORMANCE_COLLECTION_ENABLED" value="false" />
+        <variable name="FIREBASE_CRASHLYTICS_COLLECTION_ENABLED" value="false" />
+        <variable name="SETUP_RECAPTCHA_VERIFICATION" value="true" />
+    </plugin>    
 </widget>

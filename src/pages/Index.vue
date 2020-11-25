@@ -156,7 +156,7 @@ export default {
       var errorLocation = this.errorLocation;
       nrAdmin.addEventListener("message", function(data) {
         if (data.data.home == "home") {
-          nrAdmin.hide();
+          nrAdmin.close();
         }
         if (data.data.location == "location") {
           console.log("home");

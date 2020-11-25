@@ -3,7 +3,7 @@
     <q-form ref="locationTestForm" id="locationTestForm">
       <div class="q-pa-md">
         <div
-          v-if="this.$q.localStorage.getItem('tracking_status') === true"
+          v-if="this.$q.localStorage.getItem('tracking_status') !== null"
           class="q-gutter-md"
         >
           <q-btn
