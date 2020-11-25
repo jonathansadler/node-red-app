@@ -32,6 +32,7 @@
             label="APN Token"
           >
           </q-input>
+          <q-btn color="orange" icon="save" @click="getApnToken" label="Get APN" />
           <!-- <div
             class="q-pa-md q-gutter-sm items-center content-center justify-center text-left"
           >
@@ -58,7 +59,7 @@ export default {
   mounted () {
     var comp = this
     this.getToken()
-    this.getApnToken()
+    this.onApnsTokenReceived()
   },
   methods: {
     getToken () {
@@ -72,16 +73,24 @@ export default {
         }
       )
     },
-    getApnToken () {
+    onApnsTokenReceived () {
       var comp = this
 
-      if (cordova.platformId === 'ios') {
-        FirebasePlugin.onApnsTokenReceived(function (token) {
-          comp.apnToken = token
-        }, function (error) {
-          comp.apnToken = 'Error:' + error
-        })
-      }
+      // if (cordova.platformId === 'ios') {
+      FirebasePlugin.onApnsTokenReceived(function (token) {
+        comp.apnToken = token
+      }, function (error) {
+        comp.apnToken = 'Error:' + error
+      })
+      // }
+    },
+    getApnToken () {
+      var comp = this
+      FirebasePlugin.getAPNSToken(function (token) {
+        comp.apnToken = token
+      }, function (error) {
+        comp.apnToken = 'Error:' + error
+      })
     }
 
   }, // end method
