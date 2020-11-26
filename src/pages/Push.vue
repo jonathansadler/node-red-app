@@ -70,7 +70,7 @@ function onDeviceReady() {
     }
   );
 
-  checkNotificationPermission(false); // Check permission then get token
+  // checkNotificationPermission(false); // Check permission then get token
 
   // checkAutoInit()
   // isAnalyticsCollectionEnabled()
