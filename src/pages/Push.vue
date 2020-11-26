@@ -32,7 +32,12 @@
             label="APN Token"
           >
           </q-input>
-          <q-btn color="orange" icon="save" @click="getApnToken" label="Get APN" />
+          <q-btn
+            color="orange"
+            icon="save"
+            @click="getApnToken"
+            label="Get APN"
+          />
           <!-- <div
             class="q-pa-md q-gutter-sm items-center content-center justify-center text-left"
           >
@@ -52,54 +57,132 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Vue from 'vue'
+import axios from "axios";
+import Vue from "vue";
+
+function onDeviceReady() {
+  FirebasePlugin.onTokenRefresh(
+    function(token) {
+      alert("Token refreshed: " + token);
+    },
+    function(error) {
+      alert("Failed to refresh token", error);
+    }
+  );
+
+  checkNotificationPermission(false); // Check permission then get token
+
+  // checkAutoInit()
+  // isAnalyticsCollectionEnabled()
+  // isPerformanceCollectionEnabled()
+  // isCrashlyticsCollectionEnabled()
+  // isUserSignedIn()
+
+  // Platform-specific
+
+  // if (cordova.platformId === "android") {
+  //   initAndroid();
+  // } else if (cordova.platformId === "ios") {
+  initIos();
+  // }
+}
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+var initIos = function() {
+  FirebasePlugin.onApnsTokenReceived(
+    function(token) {
+      alert("APNS token received: " + token);
+    },
+    function(error) {
+      alert("Failed to receive APNS token", error);
+    }
+  );
+};
+
+// Notifications
+var checkNotificationPermission = function(requested) {
+  FirebasePlugin.hasPermission(function(hasPermission) {
+    if (hasPermission) {
+      alert("Remote notifications permission granted");
+      // Granted
+      getToken();
+    } else if (!requested) {
+      // Request permission
+      alert("Requesting remote notifications permission");
+      FirebasePlugin.grantPermission(
+        checkNotificationPermission.bind(this, true)
+      );
+    } else {
+      // Denied
+      alert("Notifications won't be shown as permission is denied");
+    }
+  });
+};
+
+// GetToken
+var getToken = function() {
+  FirebasePlugin.getToken(
+    function(token) {
+      alert("Got FCM token: " + token);
+    },
+    function(error) {
+      alert("Failed to get FCM token", error);
+    }
+  );
+};
 
 export default {
-  mounted () {
-    var comp = this
-    this.getToken()
-    this.onApnsTokenReceived()
+  mounted() {
+    var comp = this;
+    // this.getToken()
+    // this.onApnsTokenReceived()
   },
   methods: {
-    getToken () {
-      var comp = this
+    getToken() {
+      var comp = this;
       FirebasePlugin.getToken(
-        function (fcmToken) {
-          comp.fcmToken = fcmToken
+        function(fcmToken) {
+          comp.fcmToken = fcmToken;
         },
-        function (error) {
-          console.error(error)
+        function(error) {
+          console.error(error);
         }
-      )
+      );
     },
-    onApnsTokenReceived () {
-      var comp = this
+    onApnsTokenReceived() {
+      var comp = this;
 
       // if (cordova.platformId === 'ios') {
-      FirebasePlugin.onApnsTokenReceived(function (token) {
-        comp.apnToken = token
-      }, function (error) {
-        comp.apnToken = 'Error:' + error
-      })
+      FirebasePlugin.onApnsTokenReceived(
+        function(token) {
+          comp.apnToken = token;
+        },
+        function(error) {
+          comp.apnToken = "Error:" + error;
+        }
+      );
       // }
     },
-    getApnToken () {
-      var comp = this
-      FirebasePlugin.getAPNSToken(function (token) {
-        comp.apnToken = token
-      }, function (error) {
-        comp.apnToken = 'Error:' + error
-      })
+    getApnToken() {
+      var comp = this;
+      FirebasePlugin.getAPNSToken(
+        function(token) {
+          alert(token);
+          comp.apnToken = token;
+        },
+        function(error) {
+          comp.apnToken = "Error:" + error;
+        }
+      );
     }
-
   }, // end method
-  data () {
+  data() {
     return {
-      fcmToken: '',
-      apnToken: '',
+      fcmToken: "",
+      apnToken: "",
       isHidden: false
-    }
+    };
   }
-}
+};
 </script>
