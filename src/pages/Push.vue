@@ -63,10 +63,10 @@ import Vue from "vue";
 function onDeviceReady() {
   FirebasePlugin.onTokenRefresh(
     function(token) {
-      alert("Token refreshed: " + token);
+      // alert("Token refreshed: " + token);
     },
     function(error) {
-      alert("Failed to refresh token" + error);
+      // alert("Failed to refresh token" + error);
     }
   );
 
@@ -80,11 +80,11 @@ function onDeviceReady() {
 
   // Platform-specific
 
-  if (cordova.platformId === "android") {
-    // initAndroid();
-  } else if (cordova.platformId === "ios") {
-    initIos();
-  }
+  // if (cordova.platformId === "android") {
+  // initAndroid();
+  // } else if (cordova.platformId === "ios") {
+  initIos();
+  // }
 }
 
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -95,7 +95,7 @@ var initIos = function() {
       alert("APNS token received: " + token);
     },
     function(error) {
-      alert("Failed to receive APNS token" + error);
+      // alert("Failed to receive APNS token" + error);
     }
   );
 };
@@ -104,18 +104,18 @@ var initIos = function() {
 var checkNotificationPermission = function(requested) {
   FirebasePlugin.hasPermission(function(hasPermission) {
     if (hasPermission) {
-      alert("Remote notifications permission granted");
+      // alert("Remote notifications permission granted");
       // Granted
       getToken();
     } else if (!requested) {
       // Request permission
-      alert("Requesting remote notifications permission");
+      // alert("Requesting remote notifications permission");
       FirebasePlugin.grantPermission(
         checkNotificationPermission.bind(this, true)
       );
     } else {
       // Denied
-      alert("Notifications won't be shown as permission is denied");
+      // alert("Notifications won't be shown as permission is denied");
     }
   });
 };
@@ -124,10 +124,10 @@ var checkNotificationPermission = function(requested) {
 var getToken = function() {
   FirebasePlugin.getToken(
     function(token) {
-      alert("Got FCM token: " + token);
+      // alert('Got FCM token: ' + token)
     },
     function(error) {
-      alert("Failed to get FCM token" + error);
+      // alert('Failed to get FCM token' + error)
     }
   );
 };
