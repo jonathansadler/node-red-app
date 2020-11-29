@@ -186,6 +186,7 @@
                 left-label
               />
               <q-toggle
+                v-if="cordova.platformId === 'android'"
                 ref="startOnBoot"
                 v-model="startOnBoot"
                 label="Start on Boot (Android)"
@@ -221,175 +222,174 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Vue from 'vue'
-import trackLocation from '../track-location'
+import axios from "axios";
+import Vue from "vue";
+import trackLocation from "../track-location";
 
-Vue.component('LocationTest', () => import('./LocationTest.vue'))
+Vue.component("LocationTest", () => import("./LocationTest.vue"));
 
 export default {
-  mounted () {
-    var comp = this
+  mounted() {
+    var comp = this;
     this.tracking_status =
-      this.$q.localStorage.getItem('tracking_status') === null
+      this.$q.localStorage.getItem("tracking_status") === null
         ? process.env.tracking_status
-        : this.$q.localStorage.getItem('tracking_status')
+        : this.$q.localStorage.getItem("tracking_status");
     this.location_timeout =
-      this.$q.localStorage.getItem('location_timeout') === null
-        ? '30000'
-        : this.$q.localStorage.getItem('location_timeout')
+      this.$q.localStorage.getItem("location_timeout") === null
+        ? "30000"
+        : this.$q.localStorage.getItem("location_timeout");
     this.location_maxage =
-      this.$q.localStorage.getItem('location_maxage') === null
-        ? '30000'
-        : this.$q.localStorage.getItem('location_maxage')
+      this.$q.localStorage.getItem("location_maxage") === null
+        ? "30000"
+        : this.$q.localStorage.getItem("location_maxage");
     this.location_security =
-      this.$q.localStorage.getItem('location_security') === null
-        ? 'BasicAuth'
-        : this.$q.localStorage.getItem('location_security')
-    //Check run status
+      this.$q.localStorage.getItem("location_security") === null
+        ? "BasicAuth"
+        : this.$q.localStorage.getItem("location_security");
+    // Check run status
 
-    this.checkStatus()
+    this.checkStatus();
   },
   methods: {
-    checkStatus () {
-      var comp = this
-      BackgroundGeolocation.checkStatus(function (status) {
+    checkStatus() {
+      var comp = this;
+      BackgroundGeolocation.checkStatus(function(status) {
         if (status.isRunning) {
-          comp.trackingStatus = 'Running..'
-          comp.trackingColor = 'green'
+          comp.trackingStatus = "Running..";
+          comp.trackingColor = "green";
         } else {
-          comp.trackingStatus = 'Stopped'
-          comp.trackingColor = 'red'
+          comp.trackingStatus = "Stopped";
+          comp.trackingColor = "red";
         }
-      })
+      });
     },
-    startTracking () {
-      var comp = this
-      BackgroundGeolocation.checkStatus(function (status) {
+    startTracking() {
+      var comp = this;
+      BackgroundGeolocation.checkStatus(function(status) {
         console.log(
-          '[INFO] BackgroundGeolocation service is running',
+          "[INFO] BackgroundGeolocation service is running",
           status.isRunning
-        )
+        );
         console.log(
-          '[INFO] BackgroundGeolocation services enabled',
+          "[INFO] BackgroundGeolocation services enabled",
           status.locationServicesEnabled
-        )
+        );
         console.log(
-          '[INFO] BackgroundGeolocation auth status: ' + status.authorization
-        )
+          "[INFO] BackgroundGeolocation auth status: " + status.authorization
+        );
 
         // you don't need to check status before start (this is just the example)
         if (!status.isRunning) {
-          trackLocation.trackLocation() // triggers start on start event
-          comp.trackingStatus = 'Running..'
-          comp.trackingColor = 'green'
-
+          trackLocation.trackLocation(); // triggers start on start event
+          comp.trackingStatus = "Running..";
+          comp.trackingColor = "green";
         } else {
-          BackgroundGeolocation.stop() // triggers start on start event
-          comp.trackingStatus = 'Stopped'
-          comp.trackingColor = 'red'
+          BackgroundGeolocation.stop(); // triggers start on start event
+          comp.trackingStatus = "Stopped";
+          comp.trackingColor = "red";
         }
-      })
+      });
     },
-    save () {
+    save() {
       // Quasar allows us to add loading spinners to our buttons
       // so we bind the loading property to the attribute on q-btn.
-      this.saveSetting = true
+      this.saveSetting = true;
       // The login method returns a promise.
 
       this.$refs.loginForm.validate().then(success => {
         if (success) {
-          this.loading = false
+          this.loading = false;
 
-          this.$q.localStorage.set('tracking_status', this.tracking_status)
-          this.$q.localStorage.set('location_url', this.location_url)
-          this.$q.localStorage.set('location_timeout', this.location_timeout)
-          this.$q.localStorage.set('location_maxage', this.location_maxage)
-          this.$q.localStorage.set('location_security', this.location_security)
+          this.$q.localStorage.set("tracking_status", this.tracking_status);
+          this.$q.localStorage.set("location_url", this.location_url);
+          this.$q.localStorage.set("location_timeout", this.location_timeout);
+          this.$q.localStorage.set("location_maxage", this.location_maxage);
+          this.$q.localStorage.set("location_security", this.location_security);
 
-          this.$q.localStorage.set('locationProvider', this.locationProvider)
-          this.$q.localStorage.set('stationaryRadius', this.stationaryRadius)
-          this.$q.localStorage.set('distanceFilter', this.distanceFilter)
-          this.$q.localStorage.set('desiredAccuracy', this.desiredAccuracy)
-          this.$q.localStorage.set('stopOnTerminate', this.stopOnTerminate)
-          this.$q.localStorage.set('startOnBoot', this.startOnBoot)
-          this.$q.localStorage.set('locationIcon', this.locationIcon)
-          this.$q.localStorage.set('locationIconColor', this.locationIconColor)
+          this.$q.localStorage.set("locationProvider", this.locationProvider);
+          this.$q.localStorage.set("stationaryRadius", this.stationaryRadius);
+          this.$q.localStorage.set("distanceFilter", this.distanceFilter);
+          this.$q.localStorage.set("desiredAccuracy", this.desiredAccuracy);
+          this.$q.localStorage.set("stopOnTerminate", this.stopOnTerminate);
+          this.$q.localStorage.set("startOnBoot", this.startOnBoot);
+          this.$q.localStorage.set("locationIcon", this.locationIcon);
+          this.$q.localStorage.set("locationIconColor", this.locationIconColor);
           // Otherwise we let the user know they've been logged in...
           this.$q.notify({
-            color: 'positive',
+            color: "positive",
             message:
-              'Save successful! You need to restart service to apply new setting!'
-          })
+              "Save successful! You need to restart service to apply new setting!"
+          });
           // ...and redirect them to the index.
-          this.$router.push('/location')
+          this.$router.push("/location");
         } else {
           // oh no, user has filled in
           this.$q.notify({
-            color: 'orange',
-            message: 'Please input all required field!'
-          })
+            color: "orange",
+            message: "Please input all required field!"
+          });
         }
-      })
+      });
     }
   }, // end method
-  data () {
+  data() {
     return {
       isHidden: true,
       saveSetting: false,
-      tab: 'setting',
-      trackingColor: '',
-      trackingStatus: '',
+      tab: "setting",
+      trackingColor: "",
+      trackingStatus: "",
       tracking_status:
-        this.$q.localStorage.getItem('tracking_status') === null
-          ? 'true'
-          : this.$q.localStorage.getItem('tracking_status'),
-      location_url: '',
-      location_sec_options: ['None', 'BasicAuth'],
+        this.$q.localStorage.getItem("tracking_status") === null
+          ? "true"
+          : this.$q.localStorage.getItem("tracking_status"),
+      location_url: "",
+      location_sec_options: ["None", "BasicAuth"],
       locationProvider:
-        this.$q.localStorage.getItem('locationProvider') === null
-          ? 'DISTANCE_FILTER_PROVIDER'
-          : this.$q.localStorage.getItem('locationProvider'),
+        this.$q.localStorage.getItem("locationProvider") === null
+          ? "DISTANCE_FILTER_PROVIDER"
+          : this.$q.localStorage.getItem("locationProvider"),
       locationProviderOptions: [
-        'DISTANCE_FILTER_PROVIDER',
-        'ACTIVITY_PROVIDER'
+        "DISTANCE_FILTER_PROVIDER",
+        "ACTIVITY_PROVIDER"
       ],
       desiredAccuracy:
-        this.$q.localStorage.getItem('desiredAccuracy') === null
-          ? 'MEDIUM_ACCURACY'
-          : this.$q.localStorage.getItem('desiredAccuracy'),
+        this.$q.localStorage.getItem("desiredAccuracy") === null
+          ? "MEDIUM_ACCURACY"
+          : this.$q.localStorage.getItem("desiredAccuracy"),
       desiredAccuracyOptions: [
-        'HIGH_ACCURACY',
-        'MEDIUM_ACCURACY',
-        'LOW_ACCURACY'
+        "HIGH_ACCURACY",
+        "MEDIUM_ACCURACY",
+        "LOW_ACCURACY"
       ],
       location_security: null,
       stationaryRadius:
-        this.$q.localStorage.getItem('stationaryRadius') === null
-          ? '50'
-          : this.$q.localStorage.getItem('stationaryRadius'),
+        this.$q.localStorage.getItem("stationaryRadius") === null
+          ? "50"
+          : this.$q.localStorage.getItem("stationaryRadius"),
       distanceFilter:
-        this.$q.localStorage.getItem('distanceFilter') === null
-          ? '100'
-          : this.$q.localStorage.getItem('distanceFilter'),
+        this.$q.localStorage.getItem("distanceFilter") === null
+          ? "100"
+          : this.$q.localStorage.getItem("distanceFilter"),
       stopOnTerminate:
-        this.$q.localStorage.getItem('stopOnTerminate') === null
+        this.$q.localStorage.getItem("stopOnTerminate") === null
           ? false
-          : this.$q.localStorage.getItem('stopOnTerminate'),
+          : this.$q.localStorage.getItem("stopOnTerminate"),
       startOnBoot:
-        this.$q.localStorage.getItem('startOnBoot') === null
+        this.$q.localStorage.getItem("startOnBoot") === null
           ? false
-          : this.$q.localStorage.getItem('startOnBoot'),
-      admin_url: this.$q.localStorage.getItem('admin_url'),
+          : this.$q.localStorage.getItem("startOnBoot"),
+      admin_url: this.$q.localStorage.getItem("admin_url"),
       locationIcon:
-        this.$q.localStorage.getItem('locationIcon') === null
-          ? 'fa-user-circle'
-          : this.$q.localStorage.getItem('locationIcon'),
+        this.$q.localStorage.getItem("locationIcon") === null
+          ? "fa-user-circle"
+          : this.$q.localStorage.getItem("locationIcon"),
       locationIconColor:
-        this.$q.localStorage.getItem('locationIconColor') === null
-          ? 'red'
-          : this.$q.localStorage.getItem('locationIconColor')
-    }
+        this.$q.localStorage.getItem("locationIconColor") === null
+          ? "red"
+          : this.$q.localStorage.getItem("locationIconColor")
+    };
   }
-}
+};
 </script>
