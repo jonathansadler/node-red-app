@@ -106,13 +106,17 @@ export default {
       // Load dashboard
       // this.loadDashBoard()
     }
+
+    if (this.$q.localStorage.getItem("auto_start_dashboard") === true) {
+      this.loadDashBoard();
+    }
   }, // end mount
   methods: {
     loadAdmin: function() {
       var nrAdmin = cordova.InAppBrowser.open(
         this.$q.localStorage.getItem("admin_url"),
         "_blank",
-        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,usewkwebview=yes,toolbar=no"
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,usewkwebview=yes,toolbar=no,clearsessioncache=yes"
       );
 
       this.myAdmin = nrAdmin;
@@ -173,7 +177,7 @@ export default {
       var nrdash = cordova.InAppBrowser.open(
         url,
         "0",
-        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,usewkwebview=yes,toolbar=no"
+        "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,usewkwebview=yes,toolbar=no,clearsessioncache=yes"
       );
       this.myDash = nrdash;
       var localStorage = this.$q.localStorage;
