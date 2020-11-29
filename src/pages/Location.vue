@@ -186,7 +186,7 @@
                 left-label
               />
               <q-toggle
-                v-if="cordova.platformId === 'android'"
+                v-if="this.$q.cordova.platformId === 'android'"
                 ref="startOnBoot"
                 v-model="startOnBoot"
                 label="Start on Boot (Android)"
