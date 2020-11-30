@@ -176,7 +176,7 @@ export default {
       //   this.$q.localStorage.getItem("dashboard_password");
       var nrdash = cordova.InAppBrowser.open(
         url,
-        "0",
+        "_blank",
         "location=no,hidenavigationbuttons=yes,zoom=no,enableViewportScale=no,usewkwebview=yes,toolbar=no,clearsessioncache=yes"
       );
       this.myDash = nrdash;
@@ -197,7 +197,7 @@ export default {
       nrdash.addEventListener("message", function(data) {
         if (data.data.home == "home") {
           nrdash.close();
-          localStorage.set("nrdash", nrdash);
+          // localStorage.set("nrdash", nrdash);
         }
       });
     },
